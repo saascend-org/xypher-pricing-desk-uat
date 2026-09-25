@@ -21,6 +21,15 @@ def a(href, text):
     return f'<a href="{esc(href)}" target="_blank" rel="noopener">{text}</a>'
 
 
+def fig(name, cap, alt=None):
+    src = f'shots/{name}'
+    return (f'<figure class="shot"><a href="{src}" target="_blank" rel="noopener" title="Open full size">'
+            f'<img src="{src}" alt="{esc(alt or cap)}" loading="lazy"></a><figcaption>{cap}</figcaption></figure>')
+
+
+BLURNOTE = 'Cost and GP values are blurred on this public page. You will see them in the sandbox.'
+
+
 CSS = r'''
 :root{
   --ink:#1A1D28; --ink-soft:#4A4A4A; --muted:#6b7280;
@@ -93,6 +102,15 @@ section.block>.wrap>p.lead{font-size:1.06rem;color:var(--ink-soft)}
 .pill{display:inline-block;font-family:var(--f-disp);font-weight:700;font-size:.72rem;border-radius:99px;
   padding:2px 9px;background:var(--tint);color:var(--accent-ink);white-space:nowrap}
 .pill.now{background:var(--pass-tint);color:var(--pass)} .pill.next{background:var(--warn-tint);color:var(--warn)}
+
+/* screenshots */
+figure.shot{margin:14px 0;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+figure.shot a{display:block;line-height:0}
+figure.shot img{width:100%;height:auto;display:block}
+figure.shot figcaption{padding:9px 14px;font-size:.86rem;color:var(--ink-soft);border-top:1px solid var(--line)}
+.shots2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.shots2 figure.shot{margin:0}
+.reclinks a{display:inline-block;margin:2px 10px 2px 0;white-space:nowrap}
 
 /* flow diagram */
 .flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:16px 0}
@@ -186,6 +204,8 @@ def toc():
 def access():
     rows = ''.join(f'<tr><td>{a(u, esc(n))}</td><td>{esc(d)}</td></tr>' for n, u, d in C.LINKS)
     ps = ''.join(f'<li><code>{p}</code></li>' for p in C.TESTER['psets'])
+    recs = ''.join(f'<tr><td><b>{esc(d)}</b></td><td>' + ''.join(a(u, esc(l)) for l, u in links) + '</td></tr>'
+                   for d, links in C.RECORDS)
     return f'''<section class="block" id="access"><div class="wrap">
   <p class="eyebrow">Start here</p><h2>Access and links</h2>
   <p class="lead">Test as the <b>UAT Pricing Tester</b>, not as an admin. That user has exactly what a DXR rep has, plus the Catalogue Manager permission set, so it proves the real permissions.</p>
@@ -205,6 +225,9 @@ def access():
   </div>
   <h3>Links</h3>
   <div class="tblwrap"><table class="tbl"><tr><th>Open</th><th>What it's for</th></tr>{rows}</table></div>
+  <h3>Every demo record</h3>
+  <p style="font-size:.92rem;color:var(--ink-soft)">Direct links into the sandbox. Log in first, then these open straight to the record.</p>
+  <div class="tblwrap"><table class="tbl reclinks"><tr><th>Deal</th><th>Records</th></tr>{recs}</table></div>
   <p style="font-size:.9rem;color:var(--muted)">If a screen looks out of date after an update, hard-refresh (Cmd/Ctrl+Shift+R). Salesforce caches components in the browser.</p>
 </div></section>'''
 
@@ -223,6 +246,7 @@ def how():
   <p class="eyebrow">The model</p><h2>How it works</h2>
   <p class="lead">One catalogue feeds one desk. The desk writes a standard Quote, and syncing makes the Opportunity match it exactly. The order form is rendered from the Quote, so it can't disagree with what was priced.</p>
   <div class="flow">{f}</div>
+  {fig('01b-launcher-card.png', 'The Pricing Desk tab on every Opportunity: the synced quote, its TCV and ARR, and the way into the desk.')}
   <div class="tblwrap"><table class="tbl">
     <tr><th>Rule</th><th>What the user sees</th></tr>
     <tr><td><b>40% cap</b> on any line</td><td>Row turns red with "Max 40%". The quote still saves, but as Blocked, and it can't be synced or generated. Salesforce's own quote-line editor refuses it too.</td></tr>
@@ -241,6 +265,10 @@ def demo():
   <p class="eyebrow">15-minute demo</p><h2>Demo walkthrough</h2>
   <p class="lead">Five fictional deals are staged so every part of the story can be shown without building anything in front of the audience, except the last one, which is built live.</p>
   <div class="tblwrap"><table class="tbl"><tr><th>#</th><th>Opportunity</th><th>State</th><th>What it shows</th></tr>{rows}</table></div>
+  <div class="shots2">
+    {fig('01-opportunity-record.png', 'Harbourline after sync: the Opportunity Products are the quote lines.')}
+    {fig('02-desk-quote-list.png', 'Northshire in the desk: one quote ready to sync, one over the cap. ' + BLURNOTE)}
+  </div>
   <div class="card"><h3 style="margin-top:0">Running order</h3><ol class="steps">
     <li><b>The finished article (2 min).</b> {a(C.opp('A'), 'Harbourline')}: Amount £344,595 is the quote's TCV, and the Quote Summary shows annual £114,865. Open the Quote → Quote PDFs → the DXR Cyber order form.</li>
     <li><b>The guard-rail (2 min).</b> {a(C.desk('C'), 'Northshire in the desk')}: open the 45% quote to show the red row, the Blocked banner and the greyed-out Sync and PDF. Change it to 40%, Save, and it turns Ready.</li>
@@ -277,6 +305,8 @@ def reps():
       <li><b>Deal notes</b> are for context the quote doesn't show. They don't print on the order form.</li>
     </ul></div>
   </div>
+  {fig('03-desk-soc-bundle.png', 'A SOC package: mandatory components locked, one maturity level, one SIEM tier, and totals that update as you type. ' + BLURNOTE)}
+  {fig('04-desk-blocked.png', 'Over the cap: the 45% line turns red, and Sync &amp; Confirm and Generate PDF are disabled. ' + BLURNOTE)}
 </div></section>'''
 
 
@@ -293,6 +323,11 @@ def catalogue():
     <tr><td>Bulk costs</td><td><b>Cost Upload</b>: paste <code>SKU,Cost</code>, then <b>Preview Upload</b>, then <b>Apply Cost Upload</b></td><td>Only matched rows apply. Unknown, duplicate and non-numeric rows are listed and skipped</td></tr>
     <tr><td>Catalogue health</td><td><b>Data Quality</b> tiles</td><td>e.g. no cost loaded (613), service-line gap, leftover -CH codes</td></tr>
   </table></div>
+  {fig('06-catalogue-products.png', 'Products tab, searched for SOC-MON: price and cost edit inline, and Actions holds Hide, Retire and Bundle editor. ' + BLURNOTE)}
+  <div class="shots2">
+    {fig('07-catalogue-data-quality.png', 'Data Quality: what still needs fixing in the catalogue.')}
+    {fig('08-cost-upload-preview.png', 'Cost Upload preview: only matched rows apply. Unknown, duplicate and invalid rows are flagged. ' + BLURNOTE)}
+  </div>
   <div class="callout"><b>Costs and GP.</b> Costs are in GBP. Once a product has one, every quote line for it shows cost and GP, and the Opportunity's Quote Summary reports total GP and coverage ("N of M lines costed"). Costs never appear on the order form. 13 products hold USD costs that need converting before upload.</div>
   <div class="callout warn"><b>Change prices only here.</b> The standard Salesforce price book screens are locked for catalogue managers on purpose, so every price change goes through the log.</div>
 </div></section>'''
@@ -322,6 +357,11 @@ def docgen():
     </ol>
     <p style="font-size:.9rem"><b>Needed before phase 2:</b> Xypher's PandaDoc workspace connected to Salesforce, a fresh API key, and a named counter-signer.</p></div>
   </div>
+  <div class="shots2">
+    {fig('of-1.png', 'Page 1 of the Harbourline order form: parties, agreement, totals and the payment schedule. Orange = details Xypher still has to supply.')}
+    {fig('of-3.png', 'The delivery section for the Managed SOC service line: what’s included, what we need from you, how we deliver.')}
+  </div>
+  {fig('05-quote-pdfs.png', 'Every generated order form is kept on the Quote under Quote PDFs.')}
   <div class="callout">Why this route: the pricing lives in Salesforce, so one template serves DXR, CyberCrowd, Intaforensics and Aristi products. The alternative was 16 PandaDoc templates per brand, all mapped to fields.</div>
 </div></section>'''
 

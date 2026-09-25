@@ -30,6 +30,35 @@ def desk(k):
 
 
 CATALOGUE = f'{L}/lightning/n/Xypher_Catalogue'
+ACCOUNT = {'A': '001Pu00000wluqNIAQ', 'B': '001Pu00000wlv35IAA', 'C': '001Pu00000wlIVEIA2', 'E': '001Pu00000wlvB9IAI'}
+PDF = {'A': '0QDPu0000007X8vOAE', 'B': '0QDPu0000007X5hOAE'}   # latest QuoteDocument per synced deal
+PRODUCT = {'SOC-CORE-1.5TB-OPS': '01tPu00000JNMC1IAP', 'SOC-MON': '01tPu00000JNMF9IAP',
+           'GRC-CE-002': '01tPu00000JNCL8IAP', 'LIMA-LIC-PRO-PRI-3Y-002': '01tPu00000JNALxIAP'}
+
+
+def rec(obj, rid):
+    return f'{L}/lightning/r/{obj}/{rid}/view'
+
+
+def pdf(k):
+    return f'{L}/servlet/servlet.FileDownload?file={PDF[k]}'
+
+
+# Per-deal record links: (deal, [(label, url), ...])
+RECORDS = [
+    ('A · Harbourline - Managed SOC', [('Opportunity', opp('A')), ('Account', rec('Account', ACCOUNT['A'])),
+        ('Quote (synced)', quote('A')), ('Desk', desk('A')), ('Order form PDF', pdf('A'))]),
+    ('B · Kestrel & Vane - LIMA and Forensics', [('Opportunity', opp('B')), ('Account', rec('Account', ACCOUNT['B'])),
+        ('Quote (synced)', quote('B')), ('Desk', desk('B')), ('Order form PDF', pdf('B'))]),
+    ('C/D · Northshire - Cyber Essentials and Pen Test', [('Opportunity', opp('C')), ('Account', rec('Account', ACCOUNT['C'])),
+        ('Quote C (Ready)', quote('C')), ('Quote D (Blocked)', quote('D')), ('Desk', desk('C'))]),
+    ('E · Brightwater - build a quote live', [('Opportunity', opp('E')), ('Account', rec('Account', ACCOUNT['E'])),
+        ('Desk', desk('E'))]),
+    ('Catalogue', [('Xypher Catalogue app', CATALOGUE),
+        ('SOC-CORE-1.5TB-OPS', rec('Product2', PRODUCT['SOC-CORE-1.5TB-OPS'])),
+        ('SOC-MON', rec('Product2', PRODUCT['SOC-MON'])), ('GRC-CE-002', rec('Product2', PRODUCT['GRC-CE-002'])),
+        ('Change Log (all)', f'{L}/lightning/o/Catalogue_Change_Log__c/list')]),
+]
 
 LINKS = [
     ('Sandbox login', LOGIN, 'Log in as the tester here (sandbox, not production)'),
