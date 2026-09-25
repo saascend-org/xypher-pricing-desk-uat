@@ -31,7 +31,7 @@ def desk(k):
 
 CATALOGUE = f'{L}/lightning/n/Xypher_Catalogue'
 ACCOUNT = {'A': '001Pu00000wluqNIAQ', 'B': '001Pu00000wlv35IAA', 'C': '001Pu00000wlIVEIA2', 'E': '001Pu00000wlvB9IAI'}
-PDF = {'A': '0QDPu0000007X8vOAE', 'B': '0QDPu0000007X5hOAE'}   # latest QuoteDocument per synced deal
+PDF = {'A': '0QDPu0000007XC9OAM', 'B': '0QDPu0000007XDlOAM'}   # latest QuoteDocument per synced deal
 PRODUCT = {'SOC-CORE-1.5TB-OPS': '01tPu00000JNMC1IAP', 'SOC-MON': '01tPu00000JNMF9IAP',
            'GRC-CE-002': '01tPu00000JNCL8IAP', 'LIMA-LIC-PRO-PRI-3Y-002': '01tPu00000JNALxIAP'}
 
