@@ -159,8 +159,8 @@ footer img{height:26px;vertical-align:middle;margin-right:10px}
   <div class="facts">
     <span><b>Org</b> Xypher_Sandbox_FC (full-copy sandbox)</span>
     <span><b>Tester</b> UAT Pricing Tester</span>
-    <span><b>Build status</b> QA 3/3 · UAT 18/18 (re-run 25 Sep) · non-admin smoke 10/10</span>
-    <span><b>As of</b> 25 Sep 2026</span>
+    <span><b>Build status</b> QA 3/3 · UAT 23/23 · non-admin smoke 11/11 · updated 28 Sep</span>
+    <span><b>As of</b> 28 Sep 2026</span>
   </div>
 </div></header><nav class="toc" aria-label="Sections"><div class="wrap"><a href="#access">Access & links</a><a href="#how">How it works</a><a href="#demo">Demo walkthrough</a><a href="#reps">Rep enablement</a><a href="#catalogue">Catalogue & costs</a><a href="#docgen">Document generation</a><a href="#script">Test script</a><a href="#gaps">Known gaps</a><a href="#signoff">Sign-off</a></div></nav>
 <main><section class="block" id="access"><div class="wrap">
@@ -199,6 +199,7 @@ footer img{height:26px;vertical-align:middle;margin-right:10px}
     <tr><td><b>Revenue class and term</b></td><td>Annual-recurring lines × term years; one-offs count once. TCV is the Opportunity Amount.</td></tr>
     <tr><td><b>Adjustments</b></td><td><code>15</code> or <code>15%</code> is a discount, <code>£250</code> is amount off, <code>+8%</code> and <code>+£500</code> are uplifts.</td></tr>
     <tr><td><b>Gross profit</b></td><td>Shown once costs exist. Until then it reads "N of M lines costed".</td></tr>
+    <tr><td><b>Contract dates and part-term lines</b></td><td>Set the contract start (or leave blank for "on signature"); the end is calculated. A line can start later or end earlier, in whole months. Recurring lines are charged for the months they run; <b>annual recurring stays the full annual rate</b>. Renewals are priced from the lines still running at the end.</td></tr>
   </table></div>
 </div></section><section class="block" id="demo"><div class="wrap">
   <p class="eyebrow">15-minute demo</p><h2>Demo walkthrough</h2>
@@ -238,6 +239,7 @@ footer img{height:26px;vertical-align:middle;margin-right:10px}
       <li><b>Monthly-priced items</b> (e.g. SIEM platform tiers) come in at qty 12 for a year.</li>
       <li><b>Product missing?</b> It may be hidden or retired in the Catalogue. Ask the catalogue manager.</li>
       <li><b>Deal notes</b> are for context the quote doesn't show. They don't print on the order form.</li>
+      <li><b>Service starting later, or co-terming?</b> Use the line's <b>Period</b> cell: From month 4 for 33 months, say. Recurring lines are charged pro-rata; one-offs are never pro-rated.</li>
     </ul></div>
   </div>
   <figure class="shot"><a href="shots/03-desk-soc-bundle.png" target="_blank" rel="noopener" title="Open full size"><img src="shots/03-desk-soc-bundle.png" alt="A SOC package: mandatory components locked, one maturity level, one SIEM tier, and totals that update as you type. Cost and GP values are blurred on this public page. You will see them in the sandbox." loading="lazy"></a><figcaption>A SOC package: mandatory components locked, one maturity level, one SIEM tier, and totals that update as you type. Cost and GP values are blurred on this public page. You will see them in the sandbox.</figcaption></figure>
@@ -292,12 +294,12 @@ footer img{height:26px;vertical-align:middle;margin-right:10px}
   <div class="callout">Why this route: the pricing lives in Salesforce, so one template serves DXR, CyberCrowd, Intaforensics and Aristi products. The alternative was 16 PandaDoc templates per brand, all mapped to fields.</div>
 </div></section><section class="block" id="script"><div class="wrap">
   <p class="eyebrow">UAT</p><h2>Test script</h2>
-  <p class="lead">40 cases in 9 suites. Run them in order as the tester user, and mark each one Pass, Fail, Blocked or N/A. A Fail needs a note saying what you saw. Results stay in this browser until you export them. Send the CSV to SaaScend.</p>
+  <p class="lead">49 cases in 10 suites. Run them in order as the tester user, and mark each one Pass, Fail, Blocked or N/A. A Fail needs a note saying what you saw. Results stay in this browser until you export them. Send the CSV to SaaScend.</p>
   <div class="runbar">
     <div><label for="tester">Tester</label><input id="tester" autocomplete="name" placeholder="Your name"></div>
     <div><label for="rundate">Date</label><input id="rundate" type="date"></div>
     <div class="meter"><div class="bar" aria-hidden="true"><i id="m-pass" style="background:var(--pass)"></i><i id="m-fail" style="background:var(--fail)"></i><i id="m-blocked" style="background:var(--warn)"></i><i id="m-na" style="background:var(--na)"></i></div>
-      <div class="txt" id="mtxt" aria-live="polite">0 of 40 recorded</div></div>
+      <div class="txt" id="mtxt" aria-live="polite">0 of 49 recorded</div></div>
     <button class="btn primary" id="export" type="button">Export CSV</button>
     <button class="btn" id="print" type="button">Print / PDF</button>
     <button class="btn" id="reset" type="button">Clear results</button>
@@ -423,6 +425,60 @@ footer img{height:26px;vertical-align:middle;margin-right:10px}
   <div><div class="lbl">Expected result</div><div class="exp">The Opportunity Amount becomes <b>£6,915</b> and the products fill in. The 45% quote on the same deal stays Blocked.</div></div>
   <div class="res"><div class="seg" role="group" aria-label="Result for SYNC-06"><button type="button" data-v="pass" aria-pressed="false">Pass</button><button type="button" data-v="fail" aria-pressed="false">Fail</button><button type="button" data-v="blocked" aria-pressed="false">Blocked</button><button type="button" data-v="na" aria-pressed="false">N/A</button></div>
     <textarea placeholder="Notes: what you saw, if it differed" aria-label="Notes for SYNC-06"></textarea></div>
+</article></div><div class="suite" id="suite-DATE"><h3>DATE · Contract dates and part-term lines <small>Sales reps, deal desk · 9 cases</small></h3><p style="font-size:.92rem;color:var(--ink-soft)">Run after SYNC, on a <b>New Quote</b> on [DEMO] Brightwater with just the ISO 27001 line. Syncing it replaces the SYNC suite's quote on that deal. £1,100/yr is the catalogue v2 price.</p><article class="case" id="DATE-01" data-id="DATE-01" data-suite="DATE" data-title="Contract start and the calculated end">
+  <div class="hd"><span class="id">DATE-01</span><span class="ttl">Contract start and the calculated end</span></div>
+  <div><div class="lbl">Steps</div><ol class="steps"><li>New Quote, term <b>36</b>. Set <b>Contract start</b> to <b>1 Nov 2026</b>.</li></ol></div>
+  <div><div class="lbl">Expected result</div><div class="exp">Under the date: <b>Ends 31 Oct 2029</b>. Clear it and it reads <b>Starts on signature · runs 36 months</b>. Set it back.</div></div>
+  <div class="res"><div class="seg" role="group" aria-label="Result for DATE-01"><button type="button" data-v="pass" aria-pressed="false">Pass</button><button type="button" data-v="fail" aria-pressed="false">Fail</button><button type="button" data-v="blocked" aria-pressed="false">Blocked</button><button type="button" data-v="na" aria-pressed="false">N/A</button></div>
+    <textarea placeholder="Notes: what you saw, if it differed" aria-label="Notes for DATE-01"></textarea></div>
+</article><article class="case" id="DATE-02" data-id="DATE-02" data-suite="DATE" data-title="A new line runs the full term">
+  <div class="hd"><span class="id">DATE-02</span><span class="ttl">A new line runs the full term</span></div>
+  <div><div class="lbl">Steps</div><ol class="steps"><li>Search <code>CYB-CON-ISO27001-001</code> and click <b>Add</b>.</li></ol></div>
+  <div><div class="lbl">Expected result</div><div class="exp">Period shows <b>From 1 for 36 mo</b>. Term value <b>£3,300</b> (£1,100 × 3).</div></div>
+  <div class="res"><div class="seg" role="group" aria-label="Result for DATE-02"><button type="button" data-v="pass" aria-pressed="false">Pass</button><button type="button" data-v="fail" aria-pressed="false">Fail</button><button type="button" data-v="blocked" aria-pressed="false">Blocked</button><button type="button" data-v="na" aria-pressed="false">N/A</button></div>
+    <textarea placeholder="Notes: what you saw, if it differed" aria-label="Notes for DATE-02"></textarea></div>
+</article><article class="case" id="DATE-03" data-id="DATE-03" data-suite="DATE" data-title="Start later in the contract">
+  <div class="hd"><span class="id">DATE-03</span><span class="ttl">Start later in the contract</span></div>
+  <div><div class="lbl">Steps</div><ol class="steps"><li>Set <b>From</b> to <b>4</b> and click away.</li></ol></div>
+  <div><div class="lbl">Expected result</div><div class="exp"><b>for</b> becomes <b>33</b> by itself (it still runs to the end). Term value <b>£3,025</b>. <b>Annual recurring stays £1,100</b>. A new <b>Year 1 recurring</b> row shows <b>£825</b> (9 months).</div></div>
+  <div class="res"><div class="seg" role="group" aria-label="Result for DATE-03"><button type="button" data-v="pass" aria-pressed="false">Pass</button><button type="button" data-v="fail" aria-pressed="false">Fail</button><button type="button" data-v="blocked" aria-pressed="false">Blocked</button><button type="button" data-v="na" aria-pressed="false">N/A</button></div>
+    <textarea placeholder="Notes: what you saw, if it differed" aria-label="Notes for DATE-03"></textarea></div>
+</article><article class="case" id="DATE-04" data-id="DATE-04" data-suite="DATE" data-title="End before the contract does">
+  <div class="hd"><span class="id">DATE-04</span><span class="ttl">End before the contract does</span></div>
+  <div><div class="lbl">Steps</div><ol class="steps"><li>Set <b>for</b> to <b>12</b>.</li></ol></div>
+  <div><div class="lbl">Expected result</div><div class="exp">Term value <b>£1,100</b>. <b>Renewal ARR £0</b> appears, because the line doesn't run in the last month so it won't renew. Set <b>for</b> back to <b>33</b>.</div></div>
+  <div class="res"><div class="seg" role="group" aria-label="Result for DATE-04"><button type="button" data-v="pass" aria-pressed="false">Pass</button><button type="button" data-v="fail" aria-pressed="false">Fail</button><button type="button" data-v="blocked" aria-pressed="false">Blocked</button><button type="button" data-v="na" aria-pressed="false">N/A</button></div>
+    <textarea placeholder="Notes: what you saw, if it differed" aria-label="Notes for DATE-04"></textarea></div>
+</article><article class="case" id="DATE-05" data-id="DATE-05" data-suite="DATE" data-title="Past the contract end is blocked">
+  <div class="hd"><span class="id">DATE-05</span><span class="ttl">Past the contract end is blocked</span></div>
+  <div><div class="lbl">Steps</div><ol class="steps"><li>Set <b>for</b> to <b>40</b>.</li></ol></div>
+  <div><div class="lbl">Expected result</div><div class="exp">The row turns red with <b>Past contract end</b>. The quote shows as blocked and <b>Sync &amp; Confirm</b> is disabled. Set it back to <b>33</b>: it clears.</div></div>
+  <div class="res"><div class="seg" role="group" aria-label="Result for DATE-05"><button type="button" data-v="pass" aria-pressed="false">Pass</button><button type="button" data-v="fail" aria-pressed="false">Fail</button><button type="button" data-v="blocked" aria-pressed="false">Blocked</button><button type="button" data-v="na" aria-pressed="false">N/A</button></div>
+    <textarea placeholder="Notes: what you saw, if it differed" aria-label="Notes for DATE-05"></textarea></div>
+</article><article class="case" id="DATE-06" data-id="DATE-06" data-suite="DATE" data-title="Package components follow their parent">
+  <div class="hd"><span class="id">DATE-06</span><span class="ttl">Package components follow their parent</span></div>
+  <div><div class="lbl">Steps</div><ol class="steps"><li>(Optional) Add <code>SOC-CORE-1.5TB-OPS</code> and set its <b>From</b> to <b>4</b>.</li></ol></div>
+  <div><div class="lbl">Expected result</div><div class="exp">Every component shows <b>Months 4–36 · follows package</b> and can't be changed on its own. Remove the package afterwards.</div></div>
+  <div class="res"><div class="seg" role="group" aria-label="Result for DATE-06"><button type="button" data-v="pass" aria-pressed="false">Pass</button><button type="button" data-v="fail" aria-pressed="false">Fail</button><button type="button" data-v="blocked" aria-pressed="false">Blocked</button><button type="button" data-v="na" aria-pressed="false">N/A</button></div>
+    <textarea placeholder="Notes: what you saw, if it differed" aria-label="Notes for DATE-06"></textarea></div>
+</article><article class="case" id="DATE-07" data-id="DATE-07" data-suite="DATE" data-title="Sync writes the dates to the Opportunity">
+  <div class="hd"><span class="id">DATE-07</span><span class="ttl">Sync writes the dates to the Opportunity</span></div>
+  <div><div class="lbl">Steps</div><ol class="steps"><li>Save, then <b>Sync &amp; Confirm</b>. Open the Opportunity.</li></ol></div>
+  <div><div class="lbl">Expected result</div><div class="exp"><b>Contract Start Date 01/11/2026</b>, <b>Contract End Date 31/10/2029</b>, Amount <b>£3,025</b>. Quote Summary shows <b>Quote Renewal ARR £1,100</b>. The Opportunity Product shows Start Month 4, Months 33, Date 01/02/2027, Line End 31/10/2029.</div></div>
+  <div class="res"><div class="seg" role="group" aria-label="Result for DATE-07"><button type="button" data-v="pass" aria-pressed="false">Pass</button><button type="button" data-v="fail" aria-pressed="false">Fail</button><button type="button" data-v="blocked" aria-pressed="false">Blocked</button><button type="button" data-v="na" aria-pressed="false">N/A</button></div>
+    <textarea placeholder="Notes: what you saw, if it differed" aria-label="Notes for DATE-07"></textarea></div>
+</article><article class="case" id="DATE-08" data-id="DATE-08" data-suite="DATE" data-title="The order form shows the periods">
+  <div class="hd"><span class="id">DATE-08</span><span class="ttl">The order form shows the periods</span></div>
+  <div><div class="lbl">Steps</div><ol class="steps"><li>Back in the desk, click <b>Generate PDF</b>.</li></ol></div>
+  <div><div class="lbl">Expected result</div><div class="exp">Agreement: <b>Service start 1 November 2026</b>, initial term 36 months <b>to 31 October 2029</b>. Under the line: <b>1 February 2027 – 31 October 2029 (33 months)</b>. Schedule rows are dated (<b>Year 1 · Nov 2026 – Oct 2027: £825.00</b>), and the totals say <b>Recurring over 36 months</b>.</div></div>
+  <div class="res"><div class="seg" role="group" aria-label="Result for DATE-08"><button type="button" data-v="pass" aria-pressed="false">Pass</button><button type="button" data-v="fail" aria-pressed="false">Fail</button><button type="button" data-v="blocked" aria-pressed="false">Blocked</button><button type="button" data-v="na" aria-pressed="false">N/A</button></div>
+    <textarea placeholder="Notes: what you saw, if it differed" aria-label="Notes for DATE-08"></textarea></div>
+</article><article class="case" id="DATE-09" data-id="DATE-09" data-suite="DATE" data-title="Periods can&#x27;t be changed outside the desk">
+  <div class="hd"><span class="id">DATE-09</span><span class="ttl">Periods can&#x27;t be changed outside the desk</span></div>
+  <div><div class="lbl">Steps</div><ol class="steps"><li>(Admin) Try to change a quote line's <b>Months</b> outside the desk, e.g. in Salesforce's own line editor if it shows the field, or with Data Loader.</li></ol></div>
+  <div><div class="lbl">Expected result</div><div class="exp">Refused: "Change a line's start month or months in the Pricing Desk".</div></div>
+  <div class="res"><div class="seg" role="group" aria-label="Result for DATE-09"><button type="button" data-v="pass" aria-pressed="false">Pass</button><button type="button" data-v="fail" aria-pressed="false">Fail</button><button type="button" data-v="blocked" aria-pressed="false">Blocked</button><button type="button" data-v="na" aria-pressed="false">N/A</button></div>
+    <textarea placeholder="Notes: what you saw, if it differed" aria-label="Notes for DATE-09"></textarea></div>
 </article></div><div class="suite" id="suite-DOC"><h3>DOC · Order form (document generation) <small>Sales reps, deal desk · 6 cases</small></h3><article class="case" id="DOC-01" data-id="DOC-01" data-suite="DOC" data-title="Generate the order form">
   <div class="hd"><span class="id">DOC-01</span><span class="ttl">Generate the order form</span></div>
   <div><div class="lbl">Steps</div><ol class="steps"><li>On your Brightwater quote, click <b>Generate PDF</b>.</li></ol></div>

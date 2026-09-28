@@ -185,8 +185,8 @@ def hero():
   <div class="facts">
     <span><b>Org</b> Xypher_Sandbox_FC (full-copy sandbox)</span>
     <span><b>Tester</b> {esc(C.TESTER['name'])}</span>
-    <span><b>Build status</b> QA 3/3 · UAT 18/18 (re-run 25 Sep) · non-admin smoke 10/10</span>
-    <span><b>As of</b> 25 Sep 2026</span>
+    <span><b>Build status</b> QA 3/3 · UAT 23/23 · non-admin smoke 11/11 · updated 28 Sep</span>
+    <span><b>As of</b> 28 Sep 2026</span>
   </div>
 </div></header>'''
 
@@ -255,6 +255,7 @@ def how():
     <tr><td><b>Revenue class and term</b></td><td>Annual-recurring lines × term years; one-offs count once. TCV is the Opportunity Amount.</td></tr>
     <tr><td><b>Adjustments</b></td><td><code>15</code> or <code>15%</code> is a discount, <code>£250</code> is amount off, <code>+8%</code> and <code>+£500</code> are uplifts.</td></tr>
     <tr><td><b>Gross profit</b></td><td>Shown once costs exist. Until then it reads "N of M lines costed".</td></tr>
+    <tr><td><b>Contract dates and part-term lines</b></td><td>Set the contract start (or leave blank for "on signature"); the end is calculated. A line can start later or end earlier, in whole months. Recurring lines are charged for the months they run; <b>annual recurring stays the full annual rate</b>. Renewals are priced from the lines still running at the end.</td></tr>
   </table></div>
 </div></section>'''
 
@@ -303,6 +304,7 @@ def reps():
       <li><b>Monthly-priced items</b> (e.g. SIEM platform tiers) come in at qty 12 for a year.</li>
       <li><b>Product missing?</b> It may be hidden or retired in the Catalogue. Ask the catalogue manager.</li>
       <li><b>Deal notes</b> are for context the quote doesn't show. They don't print on the order form.</li>
+      <li><b>Service starting later, or co-terming?</b> Use the line's <b>Period</b> cell: From month 4 for 33 months, say. Recurring lines are charged pro-rata; one-offs are never pro-rated.</li>
     </ul></div>
   </div>
   {fig('03-desk-soc-bundle.png', 'A SOC package: mandatory components locked, one maturity level, one SIEM tier, and totals that update as you type. ' + BLURNOTE)}
