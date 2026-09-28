@@ -159,7 +159,7 @@ footer img{height:26px;vertical-align:middle;margin-right:10px}
   <div class="facts">
     <span><b>Org</b> Xypher_Sandbox_FC (full-copy sandbox)</span>
     <span><b>Tester</b> UAT Pricing Tester</span>
-    <span><b>Build status</b> QA 3/3 · UAT 23/23 · non-admin smoke 11/11 · updated 28 Sep</span>
+    <span><b>Build status</b> QA 3/3 · UAT 32/32 · non-admin smoke 12/12 · updated 28 Sep</span>
     <span><b>As of</b> 28 Sep 2026</span>
   </div>
 </div></header><nav class="toc" aria-label="Sections"><div class="wrap"><a href="#access">Access & links</a><a href="#how">How it works</a><a href="#demo">Demo walkthrough</a><a href="#reps">Rep enablement</a><a href="#catalogue">Catalogue & costs</a><a href="#docgen">Document generation</a><a href="#script">Test script</a><a href="#gaps">Known gaps</a><a href="#signoff">Sign-off</a></div></nav>
@@ -294,12 +294,12 @@ footer img{height:26px;vertical-align:middle;margin-right:10px}
   <div class="callout">Why this route: the pricing lives in Salesforce, so one template serves DXR, CyberCrowd, Intaforensics and Aristi products. The alternative was 16 PandaDoc templates per brand, all mapped to fields.</div>
 </div></section><section class="block" id="script"><div class="wrap">
   <p class="eyebrow">UAT</p><h2>Test script</h2>
-  <p class="lead">49 cases in 10 suites. Run them in order as the tester user, and mark each one Pass, Fail, Blocked or N/A. A Fail needs a note saying what you saw. Results stay in this browser until you export them. Send the CSV to SaaScend.</p>
+  <p class="lead">58 cases in 11 suites. Run them in order as the tester user, and mark each one Pass, Fail, Blocked or N/A. A Fail needs a note saying what you saw. Results stay in this browser until you export them. Send the CSV to SaaScend.</p>
   <div class="runbar">
     <div><label for="tester">Tester</label><input id="tester" autocomplete="name" placeholder="Your name"></div>
     <div><label for="rundate">Date</label><input id="rundate" type="date"></div>
     <div class="meter"><div class="bar" aria-hidden="true"><i id="m-pass" style="background:var(--pass)"></i><i id="m-fail" style="background:var(--fail)"></i><i id="m-blocked" style="background:var(--warn)"></i><i id="m-na" style="background:var(--na)"></i></div>
-      <div class="txt" id="mtxt" aria-live="polite">0 of 49 recorded</div></div>
+      <div class="txt" id="mtxt" aria-live="polite">0 of 58 recorded</div></div>
     <button class="btn primary" id="export" type="button">Export CSV</button>
     <button class="btn" id="print" type="button">Print / PDF</button>
     <button class="btn" id="reset" type="button">Clear results</button>
@@ -479,6 +479,60 @@ footer img{height:26px;vertical-align:middle;margin-right:10px}
   <div><div class="lbl">Expected result</div><div class="exp">Refused: "Change a line's start month or months in the Pricing Desk".</div></div>
   <div class="res"><div class="seg" role="group" aria-label="Result for DATE-09"><button type="button" data-v="pass" aria-pressed="false">Pass</button><button type="button" data-v="fail" aria-pressed="false">Fail</button><button type="button" data-v="blocked" aria-pressed="false">Blocked</button><button type="button" data-v="na" aria-pressed="false">N/A</button></div>
     <textarea placeholder="Notes: what you saw, if it differed" aria-label="Notes for DATE-09"></textarea></div>
+</article></div><div class="suite" id="suite-QOL"><h3>QOL · Everyday speed-ups <small>Sales reps · 9 cases</small></h3><p style="font-size:.92rem;color:var(--ink-soft)">Use a fresh <code>[PRICING TEST]</code> or demo opportunity. Hard-refresh first (Cmd/Ctrl+Shift+R).</p><article class="case" id="QOL-01" data-id="QOL-01" data-suite="QOL" data-title="One-click New Quote">
+  <div class="hd"><span class="id">QOL-01</span><span class="ttl">One-click New Quote</span></div>
+  <div><div class="lbl">Steps</div><ol class="steps"><li>On an Opportunity, open the header ▾ menu and click <b>New Quote</b>.</li></ol></div>
+  <div><div class="lbl">Expected result</div><div class="exp">The desk opens with a new quote started. Name is "<i>Account</i> – <i>term</i>m v<i>n</i>", term and contract start come from the Opportunity, and expiry is filled in.</div></div>
+  <div class="res"><div class="seg" role="group" aria-label="Result for QOL-01"><button type="button" data-v="pass" aria-pressed="false">Pass</button><button type="button" data-v="fail" aria-pressed="false">Fail</button><button type="button" data-v="blocked" aria-pressed="false">Blocked</button><button type="button" data-v="na" aria-pressed="false">N/A</button></div>
+    <textarea placeholder="Notes: what you saw, if it differed" aria-label="Notes for QOL-01"></textarea></div>
+</article><article class="case" id="QOL-02" data-id="QOL-02" data-suite="QOL" data-title="Enter adds, the package folds">
+  <div class="hd"><span class="id">QOL-02</span><span class="ttl">Enter adds, the package folds</span></div>
+  <div><div class="lbl">Steps</div><ol class="steps"><li>Type <code>SOC-CORE-1.5TB-OPS</code> and press <b>Enter</b>.</li></ol></div>
+  <div><div class="lbl">Expected result</div><div class="exp">The package arrives as <b>one row</b> with "▸ 9 included". Clicking it shows the 9 components, and clicking again hides them. The name now includes the product. Choices sit above the lines.</div></div>
+  <div class="res"><div class="seg" role="group" aria-label="Result for QOL-02"><button type="button" data-v="pass" aria-pressed="false">Pass</button><button type="button" data-v="fail" aria-pressed="false">Fail</button><button type="button" data-v="blocked" aria-pressed="false">Blocked</button><button type="button" data-v="na" aria-pressed="false">N/A</button></div>
+    <textarea placeholder="Notes: what you saw, if it differed" aria-label="Notes for QOL-02"></textarea></div>
+</article><article class="case" id="QOL-03" data-id="QOL-03" data-suite="QOL" data-title="Pinned bar and unsaved marker">
+  <div class="hd"><span class="id">QOL-03</span><span class="ttl">Pinned bar and unsaved marker</span></div>
+  <div><div class="lbl">Steps</div><ol class="steps"><li>Scroll to the top of the page.</li></ol></div>
+  <div><div class="lbl">Expected result</div><div class="exp">Save / Generate PDF / Sync, plus TCV · ARR · status, stay visible at the bottom, with an amber <b>Unsaved changes</b> dot.</div></div>
+  <div class="res"><div class="seg" role="group" aria-label="Result for QOL-03"><button type="button" data-v="pass" aria-pressed="false">Pass</button><button type="button" data-v="fail" aria-pressed="false">Fail</button><button type="button" data-v="blocked" aria-pressed="false">Blocked</button><button type="button" data-v="na" aria-pressed="false">N/A</button></div>
+    <textarea placeholder="Notes: what you saw, if it differed" aria-label="Notes for QOL-03"></textarea></div>
+</article><article class="case" id="QOL-04" data-id="QOL-04" data-suite="QOL" data-title="Line note on the order form">
+  <div class="hd"><span class="id">QOL-04</span><span class="ttl">Line note on the order form</span></div>
+  <div><div class="lbl">Steps</div><ol class="steps"><li>Click <b>Add note</b> under the package, type a note, click away. Save, then Generate PDF.</li></ol></div>
+  <div><div class="lbl">Expected result</div><div class="exp">The note shows under the line in the desk and prints under that line on the PDF.</div></div>
+  <div class="res"><div class="seg" role="group" aria-label="Result for QOL-04"><button type="button" data-v="pass" aria-pressed="false">Pass</button><button type="button" data-v="fail" aria-pressed="false">Fail</button><button type="button" data-v="blocked" aria-pressed="false">Blocked</button><button type="button" data-v="na" aria-pressed="false">N/A</button></div>
+    <textarea placeholder="Notes: what you saw, if it differed" aria-label="Notes for QOL-04"></textarea></div>
+</article><article class="case" id="QOL-05" data-id="QOL-05" data-suite="QOL" data-title="Readiness and one message">
+  <div class="hd"><span class="id">QOL-05</span><span class="ttl">Readiness and one message</span></div>
+  <div><div class="lbl">Steps</div><ol class="steps"><li>After saving, look above Commercial Terms.</li></ol></div>
+  <div><div class="lbl">Expected result</div><div class="exp">"Before you generate the order form" lists e.g. <b>No primary contact</b> and <b>No PO number</b>, each with a Fix link. The "Quote saved." message appears once, in the bar only.</div></div>
+  <div class="res"><div class="seg" role="group" aria-label="Result for QOL-05"><button type="button" data-v="pass" aria-pressed="false">Pass</button><button type="button" data-v="fail" aria-pressed="false">Fail</button><button type="button" data-v="blocked" aria-pressed="false">Blocked</button><button type="button" data-v="na" aria-pressed="false">N/A</button></div>
+    <textarea placeholder="Notes: what you saw, if it differed" aria-label="Notes for QOL-05"></textarea></div>
+</article><article class="case" id="QOL-06" data-id="QOL-06" data-suite="QOL" data-title="Fast save">
+  <div class="hd"><span class="id">QOL-06</span><span class="ttl">Fast save</span></div>
+  <div><div class="lbl">Steps</div><ol class="steps"><li>Change a discount and Save.</li></ol></div>
+  <div><div class="lbl">Expected result</div><div class="exp">Done in about a second.</div></div>
+  <div class="res"><div class="seg" role="group" aria-label="Result for QOL-06"><button type="button" data-v="pass" aria-pressed="false">Pass</button><button type="button" data-v="fail" aria-pressed="false">Fail</button><button type="button" data-v="blocked" aria-pressed="false">Blocked</button><button type="button" data-v="na" aria-pressed="false">N/A</button></div>
+    <textarea placeholder="Notes: what you saw, if it differed" aria-label="Notes for QOL-06"></textarea></div>
+</article><article class="case" id="QOL-07" data-id="QOL-07" data-suite="QOL" data-title="Fresh Opportunity">
+  <div class="hd"><span class="id">QOL-07</span><span class="ttl">Fresh Opportunity</span></div>
+  <div><div class="lbl">Steps</div><ol class="steps"><li>Sync &amp; Confirm, then <b>Back to Opportunity</b>.</li></ol></div>
+  <div><div class="lbl">Expected result</div><div class="exp">Products and Quotes show the right counts straight away. No refresh needed.</div></div>
+  <div class="res"><div class="seg" role="group" aria-label="Result for QOL-07"><button type="button" data-v="pass" aria-pressed="false">Pass</button><button type="button" data-v="fail" aria-pressed="false">Fail</button><button type="button" data-v="blocked" aria-pressed="false">Blocked</button><button type="button" data-v="na" aria-pressed="false">N/A</button></div>
+    <textarea placeholder="Notes: what you saw, if it differed" aria-label="Notes for QOL-07"></textarea></div>
+</article><article class="case" id="QOL-08" data-id="QOL-08" data-suite="QOL" data-title="Out of step warning">
+  <div class="hd"><span class="id">QOL-08</span><span class="ttl">Out of step warning</span></div>
+  <div><div class="lbl">Steps</div><ol class="steps"><li>(Admin) Add a product to the Opportunity by hand. Open its Pricing Desk tab.</li></ol></div>
+  <div><div class="lbl">Expected result</div><div class="exp">An amber "Out of step with the quote" warning appears. <b>Re-sync from quote</b> asks first, then puts the quote's products back.</div></div>
+  <div class="res"><div class="seg" role="group" aria-label="Result for QOL-08"><button type="button" data-v="pass" aria-pressed="false">Pass</button><button type="button" data-v="fail" aria-pressed="false">Fail</button><button type="button" data-v="blocked" aria-pressed="false">Blocked</button><button type="button" data-v="na" aria-pressed="false">N/A</button></div>
+    <textarea placeholder="Notes: what you saw, if it differed" aria-label="Notes for QOL-08"></textarea></div>
+</article><article class="case" id="QOL-09" data-id="QOL-09" data-suite="QOL" data-title="Quote page and My Open Quotes">
+  <div class="hd"><span class="id">QOL-09</span><span class="ttl">Quote page and My Open Quotes</span></div>
+  <div><div class="lbl">Steps</div><ol class="steps"><li>Open the Quote record, then Quotes → <b>My Open Quotes</b>.</li></ol></div>
+  <div><div class="lbl">Expected result</div><div class="exp">The Quote page shows its Opportunity and Account and lists Quote PDFs first, with no New Contact / Opportunity / Lead buttons. The list view shows your Draft, Ready and Blocked quotes.</div></div>
+  <div class="res"><div class="seg" role="group" aria-label="Result for QOL-09"><button type="button" data-v="pass" aria-pressed="false">Pass</button><button type="button" data-v="fail" aria-pressed="false">Fail</button><button type="button" data-v="blocked" aria-pressed="false">Blocked</button><button type="button" data-v="na" aria-pressed="false">N/A</button></div>
+    <textarea placeholder="Notes: what you saw, if it differed" aria-label="Notes for QOL-09"></textarea></div>
 </article></div><div class="suite" id="suite-DOC"><h3>DOC · Order form (document generation) <small>Sales reps, deal desk · 6 cases</small></h3><article class="case" id="DOC-01" data-id="DOC-01" data-suite="DOC" data-title="Generate the order form">
   <div class="hd"><span class="id">DOC-01</span><span class="ttl">Generate the order form</span></div>
   <div><div class="lbl">Steps</div><ol class="steps"><li>On your Brightwater quote, click <b>Generate PDF</b>.</li></ol></div>

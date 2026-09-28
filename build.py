@@ -185,7 +185,7 @@ def hero():
   <div class="facts">
     <span><b>Org</b> Xypher_Sandbox_FC (full-copy sandbox)</span>
     <span><b>Tester</b> {esc(C.TESTER['name'])}</span>
-    <span><b>Build status</b> QA 3/3 · UAT 23/23 · non-admin smoke 11/11 · updated 28 Sep</span>
+    <span><b>Build status</b> QA 3/3 · UAT 32/32 · non-admin smoke 12/12 · updated 28 Sep</span>
     <span><b>As of</b> 28 Sep 2026</span>
   </div>
 </div></header>'''
