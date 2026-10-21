@@ -1,6 +1,8 @@
 """Content for the Pricing Desk demo, enablement and UAT test script page.
 
-Every figure, id and label here was read from Xypher_Sandbox_FC on 25 Sep 2026.
+Round 1 figures, ids and labels were read from Xypher_Sandbox_FC on 25 Sep 2026; round 2
+(XYP-PRICING-006/007/008/009, XYP-SCOPE-002) on 21 Oct 2026.
+Client-facing text says DXR Cyber; "Xypher" appears only in real on-screen labels and identifiers.
 Edit this file, then run build.py. Never edit index.html by hand.
 """
 
@@ -87,7 +89,7 @@ DEMO_RECORDS = [
     ('C', '[DEMO] Northshire - Cyber Essentials and Pen Test', 'Quote "Cyber Essentials Small + penetration test": Ready, not synced (£6,915)',
      'Sync live and watch Amount and Products fill in, then Generate PDF'),
     ('D', 'Same opportunity as C', 'Quote "Same scope at 45% - over the cap": Blocked',
-     'The 40% cap: red row, Sync & Confirm and Generate PDF disabled'),
+     'Over 40% on a line with no cost: needs manager approval, so Sync & Confirm and Generate PDF stay locked'),
     ('E', '[DEMO] Brightwater - build a quote live', 'Empty, no quote', 'Build from scratch. The test script uses this one'),
 ]
 
@@ -109,7 +111,88 @@ SUITES = [
              ['App Launcher (the 9 dots) → search <b>Xypher Catalogue</b> → open it.'],
              'The Products tab loads with a count of the form <b>N of 732 products</b>.'),
         ],
+    },    {
+        'id': 'SCOPE', 'title': 'Scoping: rep or customer, and verification', 'who': 'Sales reps, technical verifiers',
+        'note': 'Use your own <code>[UAT]</code> opportunity with <code>PT-WEB-001</code> (web application pen test) on it. For SCOPE-01, 02 and 04, add a test contact with <b>your own email address</b> so the secure link comes to you. SCOPE-05 and 06 need a <b>technical verifier</b> (DXR Scoping Technical) who did not complete the form.',
+        'cases': [
+            ('SCOPE-01', 'Send the scoping form to the customer',
+             ['On the Opportunity, click <b>Request Scoping</b>. Confirm the service and pick your test contact.',
+              'Choose <b>Send it to the contact to complete</b> and click Next.'],
+             '"Sent to <i>contact</i>", with reminders at day 3 and day 7. The Scoping Document shows Stage <b>Sent</b> and Completion Method <b>Customer</b>. Its questionnaire is <b>read-only</b>, with the banner "This form is with the customer".'),
+            ('SCOPE-02', 'Complete it as the customer',
+             ['Open the email that arrived, click <b>Complete the scoping form</b>, answer the questions and click <b>Submit scope</b>.'],
+             'The form asks only about the service in scope and shows no prices. Back in Salesforce the document is <b>Received</b>, with the answers on the record.'),
+            ('SCOPE-03', 'Complete it yourself (e.g. on the scoping call)',
+             ['New opportunity: <b>Request Scoping</b>, choose <b>I\'ll complete it myself now</b>, Next.',
+              'Answer two questions, click <b>Save progress</b>, then <b>Finish</b>. Re-open the Scoping Document, finish the answers and click <b>Submit scope</b>.'],
+             'The questionnaire opens inside the flow, and saved answers are still there when you come back. On submit: Stage <b>Received</b>, Completion Method <b>Sales rep</b>, Completed By <b>you</b>.'),
+            ('SCOPE-04', 'Take a sent form back',
+             ['Send a form to your test contact (as SCOPE-01) but don\'t complete it. On the Scoping Document click <b>Complete it myself</b>, confirm, and fill it in.',
+              'Now open the link in the email.'],
+             'The warning says the customer\'s link will stop working. After you confirm, the questionnaire is editable and Stage is back to <b>Requested</b>. The old link says <b>"This link has been withdrawn"</b>.'),
+            ('SCOPE-05', 'Verify and close (technical verifier)',
+             ['As a technical verifier, open a <b>Received</b> scoping document you didn\'t complete and click <b>Close Scoping</b>.',
+              'Click Next without ticking. Then tick <b>I have checked these figures…</b>, add a verification note and click Next.'],
+             'Without the tick it won\'t continue. With it: "Scoping verified and closed". <b>Verified By</b> is you, with the date and your note. The scoping PDF in the Opportunity\'s Files prints <b>Verified by <i>you</i></b> and the note.'),
+            ('SCOPE-06', 'Verification controls',
+             ['As a rep (not a verifier), open a Received scoping document.',
+              'As a verifier, try to close a scope <b>you</b> completed yourself (SCOPE-03).'],
+             'The rep has no <b>Close Scoping</b> button. The verifier sees "You completed this scope yourself, so another member of the technical team must verify and close it."'),
+        ],
     },
+    {
+        'id': 'MRG', 'title': 'Margin, GP and approvals', 'who': 'Sales reps, managers',
+        'note': '<b>Most products have no cost yet</b> (see the banner at the top). Cases marked <b>costed</b> use <code>GRC-CE-009</code> (Cyber Essentials Support Consultancy), one of the 144 products that have a cost. Use a fresh <code>[UAT]</code> opportunity for this suite.',
+        'cases': [
+            ('MRG-01', 'The desk layout',
+             ['New Quote. Add <code>GRC-CE-009</code> from the side search.'],
+             'After the first line, the search becomes a compact bar above the lines, which use the full width. <b>Show catalogue</b> brings the side panel back, and the page remembers your choice. The <b>Margin</b> card shows a bar against the <b>40% minimum</b>.'),
+            ('MRG-02', 'Below 40% GP needs approval (costed)',
+             ['On <code>GRC-CE-009</code>, set <b>Adj.</b> to <b>60%</b>.'],
+             'The Margin card says GP is below the 40% minimum and suggests <b>"Cut the discount … to 57%"</b> with an <b>Apply</b> button. The banner reads <b>Needs manager approval</b>.'),
+            ('MRG-03', 'Apply the fix',
+             ['Click <b>Apply</b> on the suggestion.'],
+             'The discount becomes 57%, GP passes 40%, and the approval banner clears. Status: <b>Ready</b>.'),
+            ('MRG-04', 'A line with no cost',
+             ['Add <code>PT-WEB-001</code> (no cost loaded). Set its <b>Adj.</b> to <b>30%</b>, then to <b>45%</b>.'],
+             'The action bar shows <b>GP n/a · 1 line uncosted</b> instead of a percentage (hover for the costed-lines figure). The Margin card says GP can\'t be checked. 30% needs no approval; 45% shows <b>Over 40%: needs approval</b>.'),
+            ('MRG-05', 'Save & Submit, then Recall',
+             ['With the 45% line in place, click <b>Save &amp; Submit for Approval</b>. Read the pre-filled reason and click OK.',
+              'Then click <b>Recall</b>.'],
+             'The reason names the line, the 40% rule and "1 of 2 lines has no cost". The quote shows <b>Awaiting <i>your manager</i></b> and is locked. Recall unlocks it, back to Approval Required.'),
+            ('MRG-06', 'Manager approves or rejects',
+             ['Submit again. <b>Manager:</b> open the approval request (the bell, or the Approvals tab), read the reason and approve. On a second quote, reject with a comment.'],
+             'Approved: the rep is notified, the quote is <b>Ready · Approved</b>, and Generate PDF and Sync unlock. Rejected: the desk shows the comment and an <b>Edit &amp; Resubmit</b> button.'),
+            ('MRG-07', 'Partner discount',
+             ['(Set-up: an Account with Type <b>Partner</b> and a <b>Partner Discount %</b>, added as the primary partner on the opportunity.) New Quote, add <code>GRC-CE-009</code>.'],
+             'A banner names the partner discount, which is pre-filled on eligible service lines with a <b>Partner</b> tag. Licences, third-party costs, hardware and channel-priced lines are not discounted. Typing your own adjustment removes the tag.'),
+        ],
+    },
+    {
+        'id': 'SEND', 'title': 'Send for e-signature (PandaDoc)', 'who': 'Sales reps, managers',
+        'note': 'In the sandbox, PandaDoc sends <b>silently to a SaaScend test inbox</b>, so no customer email arrives and nobody can sign for real. At SEND-04, post the quote name in the test channel and SaaScend marks it signed in PandaDoc. Status checks run every 15 minutes.',
+        'cases': [
+            ('SEND-01', 'Locked before Proposal',
+             ['On a <code>[UAT]</code> opportunity at <b>Qualify</b>, open a Ready quote in the desk.'],
+             '<b>Request to Send</b> is greyed out with <b>Unlocks at Proposal</b> under it (hover to see why). Save, approvals and Generate PDF still work.'),
+            ('SEND-02', 'Request to Send',
+             ['Move the opportunity to <b>Proposal / Bid Submitted</b> (the usual stage gates apply). Open the quote, click <b>Request to Send</b>, add a note and click OK.'],
+             'The quote is locked: <b>Awaiting <i>your manager</i> · approval to send the order form</b>. If the price also needed approval, this one approval covers both.'),
+            ('SEND-03', 'Manager approves (this is DXR Cyber\'s acceptance)',
+             ['<b>Manager:</b> approve the request.', '<b>Rep:</b> refresh the desk after a minute or two.'],
+             'Status goes <b>Sending</b>, then <b>Out for signature</b>. The Opportunity now matches the quote: <b>Amount = the quote TCV</b>, Products filled in, Document Status <b>Sent</b>. The order form carries the manager\'s acceptance line.'),
+            ('SEND-04', 'Customer signs (simulated by SaaScend)',
+             ['Ask SaaScend to mark it signed. Wait for the next status check (up to 15 minutes), then refresh.'],
+             'The desk shows <b>Signed</b>, and the <b>signed order form</b> is in Files on the Quote and the Opportunity. Contract Start is the signing date and Contract End is start + term − 1 day, on both. The stage is <b>not</b> moved: the owner gets a notification and a Task, <b>"Close Won: signed order form received"</b>, and the deal appears in the list view <b>Signed, not yet Closed Won</b>.'),
+            ('SEND-05', 'Revise & Resend',
+             ['On another sent quote, click <b>Revise &amp; Resend</b> and confirm.'],
+             'It shows "Withdrawing…", then <b>Not Sent</b> once PandaDoc confirms. You can edit the quote and send it again, which needs approval again.'),
+            ('SEND-06', 'No manager, no send',
+             ['(Admin) Clear the tester\'s Manager, try Request to Send, then put the Manager back.'],
+             'Refused: "No manager is set on your Salesforce user, so nobody can approve this send."'),
+        ],
+    },
+
     {
         'id': 'DESK', 'title': 'Build a quote', 'who': 'Sales reps',
         'note': 'Run in order on <b>[DEMO] Brightwater</b>. The figures assume every earlier step was done, at catalogue v2 prices.',
@@ -148,11 +231,11 @@ SUITES = [
         ],
     },
     {
-        'id': 'DISC', 'title': 'Discounts and the 40% cap', 'who': 'Sales reps',
+        'id': 'DISC', 'title': 'Discounts and the 40% rule', 'who': 'Sales reps',
         'cases': [
-            ('DISC-01', 'Over the cap blocks the quote',
+            ('DISC-01', 'Over 40% needs approval',
              ['Type <b>45</b> in the operational-effort line\'s <b>Adj.</b> box.', 'Click <b>Save</b>.'],
-             'The row turns red with <b>Max 40%</b>. The quote saves as <b>Blocked</b> with a red banner. <b>Sync &amp; Confirm</b> and <b>Generate PDF</b> are disabled.'),
+             'The line shows <b>Over 40%: needs approval</b> and an amber <b>Needs manager approval</b> banner appears (most SOC lines have no cost yet, so the 40% discount rule applies). The quote saves as <b>Approval Required</b>. <b>Sync &amp; Confirm</b> and <b>Generate PDF</b> stay locked until a manager approves. Don\'t submit it here; the MRG suite covers approvals.'),
             ('DISC-02', 'Bring it under the cap',
              ['Change the adjustment to <b>20%</b>. Backspace and retype normally.', 'Click <b>Save</b>.'],
              'Annual <b>£111,715</b>, TCV <b>£335,145</b>. Status is <b>Ready</b>. Sync is enabled.'),
@@ -177,10 +260,9 @@ SUITES = [
             ('SYNC-04', 'Save as a new version',
              ['Click <b>Save as New Quote</b>.'],
              'A second quote appears in the list, <b>not synced</b>. The Opportunity Amount is unchanged.'),
-            ('SYNC-05', 'The cap can\'t be bypassed',
-             [f'Open the <a href="{quote("C")}" target="_blank" rel="noopener">Northshire Ready quote</a> record.',
-              'Use Salesforce\'s own <b>Edit Products / Lines</b> to set a line discount of <b>50</b>, then try <b>150</b>.'],
-             'Both are refused: over the 40% limit, and over 100%. Cancel the edit.'),
+            ('SYNC-05', 'The rule can\'t be bypassed',
+             ['On your synced Brightwater quote, open the Quote record and use Salesforce\'s own <b>Edit Products / Lines</b> to set a line discount of <b>50</b>, then try <b>150</b>.'],
+             'Both are refused: 50% "needs approval, and a synced quote cannot carry it"; 150% is over 100%. Cancel the edit.'),
             ('SYNC-06', 'Sync a saved quote live (demo C)',
              [f'Open the desk on <a href="{desk("C")}" target="_blank" rel="noopener">[DEMO] Northshire</a>.',
               'Open <b>Cyber Essentials Small + penetration test</b> and click <b>Sync &amp; Confirm</b>.'],
@@ -264,13 +346,13 @@ SUITES = [
              'DXR Cyber branding, marked <b>DRAFT</b>. It shows the customer <b>Brightwater Academy Trust</b>, contact <b>Tom Ashby</b> and the billing address, with the lines and discount matching the desk. There is one delivery section for the Managed SOC service line and a 3-year payment schedule. <b>No cost or margin appears anywhere.</b>'),
             ('DOC-03', 'Placeholders are visible, not blank',
              ['Look at the contracting entity, company and VAT numbers, and the terms URL.'],
-             'They show as <b style="color:#c2410c">orange placeholders</b>. This is expected until Xypher supplies the details.'),
+             'They show as <b style="color:#c2410c">orange placeholders</b>. This is expected until DXR Cyber supplies the details.'),
             ('DOC-04', 'Multi-service-line deal',
              [f'Open <a href="{opp("B")}" target="_blank" rel="noopener">[DEMO] Kestrel &amp; Vane</a> → its Quote → <b>Quote PDFs</b> → open the PDF.'],
              'Two service lines give <b>two delivery sections</b>. The £3,600 one-off sits in <b>year 1</b> of the payment schedule.'),
-            ('DOC-05', 'Blocked quotes can\'t produce a document',
+            ('DOC-05', 'Unapproved quotes can\'t produce a document',
              ['On Northshire, open the <b>Same scope at 45%</b> quote in the desk.'],
-             '<b>Generate PDF</b> is disabled.'),
+             'It shows <b>Needs manager approval</b> and <b>Generate PDF</b> is disabled.'),
             ('DOC-06', 'Re-generate after a change',
              ['Change a discount on your Brightwater quote, Save, then Generate PDF again.'],
              'A second PDF is added under Quote PDFs with the new figures. The first one is kept.'),
@@ -339,14 +421,16 @@ SUITES = [
 ]
 
 KNOWN_GAPS = [
-    ('Contracting entity, company/VAT numbers, terms URL', 'Xypher (Dan / finance)', 'Order forms print DRAFT with orange placeholders until supplied'),
+    ('Product costs: 583 of 727 active products have no cost yet', 'DXR Cyber (Lisa Washer), via the cost template', 'GP checks only apply to fully costed quotes. Until then, quotes with an uncosted line show "GP n/a" and fall back to the rule "over 40% discount needs approval". Every flow can be tested now'),
+    ('Who is in the test group: reps, their managers (approvers), technical verifiers', 'Tej / DXR Cyber', "SaaScend sets each tester's Manager, the managers' PandaDoc seat flag and the scoping permission sets before testing starts"),
+    ('PandaDoc production API key (the sandbox uses a sandbox key)', 'DXR Cyber', 'Sandbox sends go silently to a SaaScend inbox; customer signatures are simulated'),
+    ('Contracting entity, company/VAT numbers, terms URL', 'DXR Cyber (Dan / finance)', 'Order forms print DRAFT with orange placeholders until supplied'),
     ('One-off invoicing trigger (on acceptance vs on completion)', 'Sarah / finance', 'The order form says "on acceptance"'),
     ('Delivery module wording (27 modules)', 'Each delivery team', 'SaaScend drafts, no SLA numbers. Edited in Setup, no deploy'),
     ('Catalogue v2 open questions: maturity multiplier, USD FX rate, 14 unpriced products, SOC-PRO-UCD, SOC-QBR price, "Annual Rate" label on monthly lines', 'Lisa Washer', 'Affects some prices and labels, not the mechanics'),
-    ('Costs: 613 products have none loaded; 13 are in USD', 'Lisa Washer', 'GP shows "N of M lines costed" until loaded'),
-    ('Brand font Sailec (Figtree is the stand-in)', 'Xypher marketing', 'Cosmetic'),
-    ('PandaDoc e-signature', 'SaaScend + Xypher', 'Phase 2, see "Document generation"'),
-    ('Production plan: enabling Quotes can\'t be undone', 'Tej + Xypher', 'Needs a dated cut-over and sign-off'),
+    ('Brand font Sailec (Figtree is the stand-in)', 'DXR Cyber marketing', 'Cosmetic'),
+    ('Close Won still runs separately through the work package (it emails Projects and Finance)', 'By design', "Not part of this round's script"),
+    ('Production plan: enabling Quotes can\'t be undone', 'Tej + DXR Cyber', 'Needs a dated cut-over and sign-off'),
 ]
 
-SIGNOFF = ['Sales (rep) tester', 'Catalogue manager', 'Deal desk / finance', 'Xypher sponsor', 'SaaScend (build lead)']
+SIGNOFF = ['Sales (rep) tester', 'Sales manager (approver)', 'Technical verifier (scoping)', 'Catalogue manager', 'Deal desk / finance', 'DXR Cyber sponsor', 'SaaScend (build lead)']

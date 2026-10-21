@@ -179,19 +179,19 @@ def hero():
     return f'''<header class="hero"><div class="wrap">
   <div class="brandbar"><img src="data:image/png;base64,{LOGO}" alt="SaaScend">
     <span class="tag">Sandbox · internal · not for customers</span></div>
-  <p class="eyebrow">Xypher · XYP-PRICING-001 / 003</p>
-  <h1>Pricing Desk &amp; Order Form</h1>
-  <p>Demo guide, enablement and the UAT test script. Every case below has to pass before we plan the production release.</p>
+  <p class="eyebrow">DXR Cyber · Round 2 · scoping, margin, approvals and e-signature</p>
+  <h1>Pricing Desk, Approvals &amp; E-signature</h1>
+  <p>Demo guide, enablement and the UAT test script for the small test group. Every case below has to pass before we plan the production release.</p>
   <div class="facts">
     <span><b>Org</b> Xypher_Sandbox_FC (full-copy sandbox)</span>
-    <span><b>Tester</b> {esc(C.TESTER['name'])}</span>
-    <span><b>Build status</b> QA 3/3 · UAT 32/32 · non-admin smoke 12/12 · updated 28 Sep</span>
-    <span><b>As of</b> 28 Sep 2026</span>
+    <span><b>Testing</b> open · cost data still to come</span>
+    <span><b>Build status</b> Apex 218/218 · browser UAT 9 suites green · 21 Oct</span>
+    <span><b>As of</b> 21 Oct 2026</span>
   </div>
 </div></header>'''
 
 
-TOC = [('access', 'Access & links'), ('how', 'How it works'), ('demo', 'Demo walkthrough'),
+TOC = [('round2', 'Round 2: start here'), ('access', 'Access & links'), ('how', 'How it works'), ('demo', 'Demo walkthrough'),
        ('reps', 'Rep enablement'), ('catalogue', 'Catalogue & costs'), ('docgen', 'Document generation'),
        ('script', 'Test script'), ('gaps', 'Known gaps'), ('signoff', 'Sign-off')]
 
@@ -199,6 +199,47 @@ TOC = [('access', 'Access & links'), ('how', 'How it works'), ('demo', 'Demo wal
 def toc():
     return '<nav class="toc" aria-label="Sections"><div class="wrap">' + ''.join(
         f'<a href="#{i}">{t}</a>' for i, t in TOC) + '</div></nav>'
+
+
+def round2():
+    new = [
+        ('Scoping', 'Request Scoping asks: <b>send it to the customer</b> or <b>complete it yourself</b>. A sent form can be taken back with <b>Complete it myself</b>; the customer\'s link stops working. Closing a scope is now <b>engineer verification</b>: a technical verifier ticks "I have checked these figures", and nobody verifies a scope they filled in.', 'SCOPE'),
+        ('Margin and GP', 'Net revenue = price − licence cost; GP = net revenue − delivery cost. A <b>fully costed</b> quote below <b>40% GP</b> needs manager approval, and the <b>Margin</b> card says how to pass ("cut the discount to 57%", with Apply). A quote with any uncosted line shows <b>GP n/a</b> and falls back to "over 40% discount needs approval".', 'MRG'),
+        ('Approvals', '<b>Save &amp; Submit</b> goes to your Salesforce manager with the reason filled in. Recall, Edit &amp; Resubmit, and a notification either way. Partner deals pre-fill the partner\'s discount on eligible lines.', 'MRG'),
+        ('Send for e-signature', '<b>Request to Send</b> (from Proposal onwards) goes to your manager; their approval is DXR Cyber\'s acceptance. PandaDoc then sends the order form <b>as the manager</b>, so reps need no PandaDoc licence. Revise &amp; Resend withdraws a sent version.', 'SEND'),
+        ('Signed deals tidy themselves', 'The Opportunity syncs to the quote when it goes out. On signature: signed PDF on the Quote and Opportunity, contract dates from the signing date, and a "Close Won" Task plus a notification for the owner.', 'SEND'),
+    ]
+    rows = ''.join(f'<tr><td><b>{t}</b></td><td>{d}</td><td><a href="#suite-{sid}">{sid}</a></td></tr>' for t, d, sid in new)
+    roles = [
+        ('Sales rep', 'Requests scoping, builds and submits quotes, requests the send', 'SCOPE-01–04, MRG, SEND'),
+        ('Sales manager', 'Approves or rejects price and send requests; must have a PandaDoc seat', 'MRG-06, SEND-03'),
+        ('Technical verifier', 'Verifies and closes scoping (DXR Scoping Technical)', 'SCOPE-05–06'),
+        ('Catalogue manager', 'Loads costs as they arrive (Cost Upload)', 'COST'),
+        ('SaaScend', 'Sets everyone up, simulates the customer signature on request, answers questions', 'SEND-04'),
+    ]
+    rr = ''.join(f'<tr><td><b>{r}</b></td><td>{w}</td><td>{c}</td></tr>' for r, w, c in roles)
+    return f'''<section class="block" id="round2"><div class="wrap">
+  <p class="eyebrow">Round 2 · start here</p><h2>What's new, and what to test first</h2>
+  <div class="callout warn"><b>Awaiting cost data, but testing can start now.</b> 583 of the 727 active products have no cost loaded yet; DXR Cyber is filling in the cost template. Until a quote's lines all have costs, the desk shows <b>GP n/a</b> and the rule is the simpler one: <b>a discount over 40% needs manager approval</b>. Every flow below works today. The few cases that need a costed product say so and use <code>GRC-CE-009</code>. Once costs are loaded we re-run MRG-02/03 on real deals.</div>
+  <div class="tblwrap"><table class="tbl"><tr><th>Change</th><th>What you'll see</th><th>Tests</th></tr>{rows}</table></div>
+  <h3>Who does what</h3>
+  <div class="tblwrap"><table class="tbl"><tr><th>Role</th><th>In this round</th><th>Cases</th></tr>{rr}</table></div>
+  <div class="grid2">
+    <div class="card"><h3 style="margin-top:0">Before you start (SaaScend sets this up)</h3><ul>
+      <li>Each tester has a <b>Manager</b> in Salesforce (approvals go there; there is no fallback).</li>
+      <li>Each manager is marked as holding a <b>PandaDoc seat</b>.</li>
+      <li>Reps have <b>DXR Scoping Sales</b>; verifiers have <b>DXR Scoping Technical</b>.</li>
+      <li>A test channel for questions and for "please sign SEND-04".</li>
+    </ul></div>
+    <div class="card"><h3 style="margin-top:0">Suggested order</h3><ol class="steps">
+      <li><b>ACC</b>: log in and find things.</li>
+      <li><b>SCOPE</b>, then <b>MRG</b>, then <b>SEND</b>: the new round, on your own <code>[UAT]</code> opportunities.</li>
+      <li>The round 1 suites (DESK to PERM) as a regression check, on the <code>[DEMO]</code> records.</li>
+      <li>Export your CSV and send it to SaaScend.</li>
+    </ol></div>
+  </div>
+  <div class="callout"><b>In the sandbox:</b> PandaDoc sends silently to a SaaScend inbox, so customers never receive anything and SaaScend simulates the signature. Customer scoping emails go to whatever address the contact has, so use a test contact with your own email. Never use a real customer's opportunity.</div>
+</div></section>'''
 
 
 def access():
@@ -219,7 +260,8 @@ def access():
       <ol class="steps">
         <li>Salesforce sent the tester's set-password email to SaaScend's delivery mailbox. SaaScend sets the password and shares it with you <b>directly, never in this page or in chat channels</b>.</li>
         <li>Log in at {a(C.LOGIN, 'the sandbox login page')} (not login.salesforce.com).</li>
-        <li>One person at a time: every tester shares this user. Put your own name in the test script's <b>Tester</b> box so your results are yours.</li>
+        <li>One person at a time: every rep tester shares this user. Put your own name in the test script's <b>Tester</b> box so your results are yours.</li>
+        <li><b>Managers and technical verifiers</b> (round 2) log in to the sandbox as themselves: approvals and verification have to come from a different person than the rep.</li>
       </ol>
       <div class="callout warn" style="font-size:.9rem"><b>Sandbox only.</b> The <code>[DEMO]</code> companies and contacts are fictional. Never test on a real customer's opportunity.</div></div>
   </div>
@@ -234,27 +276,31 @@ def access():
 
 def how():
     steps = [
-        ('1', 'Catalogue', 'Products, prices, bundles and costs, maintained in the Xypher Catalogue app. Every change is logged.'),
-        ('2', 'Pricing Desk', 'The rep builds a quote on the Opportunity. Bundles, choices and discounts are applied live.'),
-        ('3', 'Quote', 'Saved as a standard Salesforce Quote. Status: Ready, or Blocked if any line is over 40%.'),
-        ('4', 'Sync & Confirm', 'The Opportunity\'s Products and Amount (= TCV) now are the quote. Later edits flow through by themselves.'),
-        ('5', 'Order form', 'Generate PDF renders the DXR Cyber order form and saves it on the Quote.'),
-        ('6', 'E-signature', 'Phase 2: the saved PDF goes to Xypher\'s PandaDoc for signature, and the status comes back.'),
+        ('1', 'Scoping', 'Sent to the customer or completed by the rep, then verified and closed by the technical team. The scoping PDF is filed on the Opportunity.'),
+        ('2', 'Pricing Desk', 'The rep builds a quote from the catalogue (products, prices, bundles and costs in the Xypher Catalogue app). Margin is checked live.'),
+        ('3', 'Approval', 'Below 40% GP (fully costed), or over 40% discount on a line with no cost: the rep\'s manager approves in Salesforce.'),
+        ('4', 'Request to Send', 'From Proposal onwards. The manager approves the send, which is DXR Cyber\'s acceptance. The Opportunity syncs to the quote.'),
+        ('5', 'PandaDoc', 'The order form goes out for e-signature as the manager. Status is checked every 15 minutes.'),
+        ('6', 'Signed', 'Signed PDF on the Quote and Opportunity, contract dates set, and the owner is told to Close Won.'),
     ]
-    f = ''.join(f'<div class="step{" p2" if n == "6" else ""}"><div class="n">{n}{" · PHASE 2" if n == "6" else ""}</div><div class="t">{t}</div><div class="d">{d}</div></div>' for n, t, d in steps)
+    f = ''.join(f'<div class="step"><div class="n">{n}</div><div class="t">{t}</div><div class="d">{d}</div></div>' for n, t, d in steps)
     return f'''<section class="block" id="how"><div class="wrap">
   <p class="eyebrow">The model</p><h2>How it works</h2>
-  <p class="lead">One catalogue feeds one desk. The desk writes a standard Quote, and syncing makes the Opportunity match it exactly. The order form is rendered from the Quote, so it can't disagree with what was priced.</p>
+  <p class="lead">Scoping feeds pricing, and one catalogue feeds one desk. The desk writes a standard Quote, and the Opportunity is kept in step with it. The order form is rendered from the Quote, so it can't disagree with what was priced, and what is signed comes back to the deal.</p>
   <div class="flow">{f}</div>
   {fig('01b-launcher-card.png', 'The Pricing Desk tab on every Opportunity: the synced quote, its TCV and ARR, and the way into the desk.')}
   <div class="tblwrap"><table class="tbl">
     <tr><th>Rule</th><th>What the user sees</th></tr>
-    <tr><td><b>40% cap</b> on any line</td><td>Row turns red with "Max 40%". The quote still saves, but as Blocked, and it can't be synced or generated. Salesforce's own quote-line editor refuses it too.</td></tr>
+    <tr><td><b>40% GP minimum</b> (fully costed quotes)</td><td>Below 40% GP the quote needs manager approval. The Margin card shows the bar and suggests the change that passes, with an Apply button.</td></tr>
+    <tr><td><b>Lines with no cost</b></td><td>GP can't be checked, so the desk shows "GP n/a". A discount over 40% on any line needs manager approval instead.</td></tr>
+    <tr><td><b>Until approved</b></td><td>The quote saves as Approval Required. Sync &amp; Confirm and Generate PDF stay locked. Salesforce's own quote-line editor can't get round it. Over 100%, or a line past the contract end, is Blocked outright.</td></tr>
+    <tr><td><b>Sending for signature</b></td><td>Only at Proposal / Bid Submitted or Negotiation, and only with the manager's approval. Reps need no PandaDoc licence.</td></tr>
+    <tr><td><b>Partner deals</b></td><td>The partner Account's Partner Discount % is pre-filled on eligible lines (not licences, third-party, hardware or channel-priced lines).</td></tr>
     <tr><td><b>Mandatory components</b></td><td>Added automatically with their parent. They can't be removed on their own.</td></tr>
     <tr><td><b>Choice groups</b></td><td>SOC maturity: exactly one, Standard by default. SIEM platform: none or one.</td></tr>
     <tr><td><b>Revenue class and term</b></td><td>Annual-recurring lines × term years; one-offs count once. TCV is the Opportunity Amount.</td></tr>
     <tr><td><b>Adjustments</b></td><td><code>15</code> or <code>15%</code> is a discount, <code>£250</code> is amount off, <code>+8%</code> and <code>+£500</code> are uplifts.</td></tr>
-    <tr><td><b>Gross profit</b></td><td>Shown once costs exist. Until then it reads "N of M lines costed".</td></tr>
+    <tr><td><b>Gross profit</b></td><td>Net revenue = price − licence cost; GP = net revenue − delivery cost. Shown as a % only when every line is costed.</td></tr>
     <tr><td><b>Contract dates and part-term lines</b></td><td>Set the contract start (or leave blank for "on signature"); the end is calculated. A line can start later or end earlier, in whole months. Recurring lines are charged for the months they run; <b>annual recurring stays the full annual rate</b>. Renewals are priced from the lines still running at the end.</td></tr>
   </table></div>
 </div></section>'''
@@ -272,14 +318,14 @@ def demo():
   </div>
   <div class="card"><h3 style="margin-top:0">Running order</h3><ol class="steps">
     <li><b>The finished article (2 min).</b> {a(C.opp('A'), 'Harbourline')}: Amount £344,595 is the quote's TCV, and the Quote Summary shows annual £114,865. Open the Quote → Quote PDFs → the DXR Cyber order form.</li>
-    <li><b>The guard-rail (2 min).</b> {a(C.desk('C'), 'Northshire in the desk')}: open the 45% quote to show the red row, the Blocked banner and the greyed-out Sync and PDF. Change it to 40%, Save, and it turns Ready.</li>
+    <li><b>The guard-rail (2 min).</b> {a(C.desk('C'), 'Northshire in the desk')}: open the 45% quote to show "needs manager approval" and the greyed-out Sync and PDF. Change it to 40%, Save, and it turns Ready.</li>
     <li><b>Sync live (2 min).</b> Open the other Northshire quote and click Sync &amp; Confirm. Back on the Opportunity, Amount is £6,915 and the Products are filled in. Generate PDF.</li>
     <li><b>A two-service deal (2 min).</b> {a(C.opp('B'), 'Kestrel &amp; Vane')}: its order form has one delivery section per service line, and the £3,600 one-off sits in year 1.</li>
     <li><b>Build one (5 min).</b> {a(C.desk('E'), 'Brightwater')}: New Quote → search <code>SOC-CORE-1.5TB-OPS</code> → the bundle arrives → switch maturity → add a SIEM tier → 10% off → Save → Sync → Generate PDF.</li>
     <li><b>Behind the scenes (2 min).</b> {a(C.CATALOGUE, 'Xypher Catalogue')}: the Products grid, Data Quality tiles, Change Log and Cost Upload.</li>
   </ol>
   <p style="font-size:.9rem;color:var(--muted)">Syncing or editing a demo record changes it for the next person. SaaScend can rebuild all five from the build scripts in minutes.</p></div>
-  <div class="callout warn">The order forms print <b>DRAFT</b> with orange placeholders for the contracting entity, company and VAT numbers, and the terms URL. Say so up front. It's waiting on Xypher's details, not a fault.</div>
+  <div class="callout warn">The order forms print <b>DRAFT</b> with orange placeholders for the contracting entity, company and VAT numbers, and the terms URL. Say so up front. It's waiting on DXR Cyber's details, not a fault.</div>
 </div></section>'''
 
 
@@ -293,14 +339,15 @@ def reps():
       <li><b>New Quote</b>. Name it and set the term in months. Check the commercial terms dropdowns.</li>
       <li>Add products by <b>search</b> (name or SKU) or by <b>service-line chip</b>. Packages bring their mandatory components with them.</li>
       <li>Click a package line to open <b>Bundle &amp; Add-ons</b>: pick the maturity level, and the SIEM tier if one is needed.</li>
-      <li>Type adjustments in <b>Adj.</b> on each line. Keep every line at 40% or less.</li>
-      <li><b>Save</b>, then <b>Sync &amp; Confirm</b>. The Opportunity now matches the quote.</li>
-      <li><b>Generate PDF</b>. The order form opens and is saved on the Quote.</li>
+      <li>Type adjustments in <b>Adj.</b> on each line. Watch the <b>Margin</b> card: if it says approval is needed, Apply its suggestion or use <b>Save &amp; Submit for Approval</b>.</li>
+      <li><b>Save</b>. When the deal reaches Proposal, click <b>Request to Send</b>: your manager approves and PandaDoc sends it as them.</li>
+      <li>Or, to keep working by hand: <b>Sync &amp; Confirm</b>, then <b>Generate PDF</b>.</li>
     </ol></div>
     <div class="card"><h3 style="margin-top:0">Good to know</h3><ul>
       <li><b>Edit after sync?</b> Just Save. A synced quote pushes changes to the Opportunity by itself.</li>
       <li><b>Try an alternative?</b> <b>Save as New Quote</b> makes a copy; only the synced one drives the Opportunity.</li>
-      <li><b>Blocked?</b> Find the red line and bring it to 40% or less. Deals needing more go to the deal desk first.</li>
+      <li><b>Needs approval?</b> The Margin card says why and what would pass. Apply it, or submit with a reason; your manager decides.</li>
+      <li><b>GP n/a?</b> At least one line has no cost yet, so only discounts are checked (over 40% needs approval).</li>
       <li><b>Monthly-priced items</b> (e.g. SIEM platform tiers) come in at qty 12 for a year.</li>
       <li><b>Product missing?</b> It may be hidden or retired in the Catalogue. Ask the catalogue manager.</li>
       <li><b>Deal notes</b> are for context the quote doesn't show. They don't print on the order form.</li>
@@ -351,16 +398,16 @@ def docgen():
       <li>The PDF is saved on the Quote under <b>Quote PDFs</b> and opens in a new tab. Regenerating adds a new version and keeps the old one.</li>
     </ol>
     <p style="font-size:.9rem">Delivery wording and entity details are data, not code. An admin edits them in Setup → Custom Metadata Types (<code>Order Form Delivery</code>, <code>Order Form Entity</code>). No deployment is needed.</p></div>
-    <div class="card"><h3 style="margin-top:0"><span class="pill next">Phase 2 · planned</span> PandaDoc for signature</h3><ol class="steps">
-      <li>A <b>Send for signature</b> action on the Quote sends the saved PDF to <b>Xypher's</b> PandaDoc workspace.</li>
-      <li>PandaDoc adds the signing fields: customer signer (the primary contact), customer initials and the DXR Cyber counter-signer. It then emails the customer.</li>
-      <li>Status (sent, viewed, completed) is written back to the Opportunity by the existing PandaDoc write-back flow. The signed PDF is attached back.</li>
-      <li>Until then, DXR can keep sending from its current PandaDoc templates. The PandaDoc panel on the Opportunity is unchanged.</li>
+    <div class="card"><h3 style="margin-top:0"><span class="pill now">Built · in sandbox</span> PandaDoc for signature</h3><ol class="steps">
+      <li>The rep clicks <b>Request to Send</b> (from Proposal onwards). Their manager approves; that approval is DXR Cyber's acceptance and prints on the order form.</li>
+      <li>Salesforce uploads the order form to DXR Cyber's PandaDoc workspace with the signature fields in place and sends it <b>as the manager</b>. Only the customer signs; reps need no PandaDoc licence.</li>
+      <li>Every 15 minutes Salesforce checks the status (sent, viewed, signed), within PandaDoc's API limits.</li>
+      <li>On signature the signed PDF is filed on the Quote and the Opportunity, the contract dates are set, and the owner is told to Close Won. <b>Revise &amp; Resend</b> withdraws a sent version.</li>
     </ol>
-    <p style="font-size:.9rem"><b>Needed before phase 2:</b> Xypher's PandaDoc workspace connected to Salesforce, a fresh API key, and a named counter-signer.</p></div>
+    <p style="font-size:.9rem"><b>Needed before production:</b> the production PandaDoc API key, and PandaDoc seats for the approving managers.</p></div>
   </div>
   <div class="shots2">
-    {fig('of-1.png', 'Page 1 of the Harbourline order form: parties, agreement, totals and the payment schedule. Orange = details Xypher still has to supply.')}
+    {fig('of-1.png', 'Page 1 of the Harbourline order form: parties, agreement, totals and the payment schedule. Orange = details DXR Cyber still has to supply.')}
     {fig('of-3.png', 'The delivery section for the Managed SOC service line: what’s included, what we need from you, how we deliver.')}
   </div>
   {fig('05-quote-pdfs.png', 'Every generated order form is kept on the Quote under Quote PDFs.')}
@@ -392,7 +439,7 @@ def script():
                  + ''.join(case_html(s['id'], c) for c in s['cases']) + '</div>')
     return f'''<section class="block" id="script"><div class="wrap">
   <p class="eyebrow">UAT</p><h2>Test script</h2>
-  <p class="lead">{total} cases in {len(C.SUITES)} suites. Run them in order as the tester user, and mark each one Pass, Fail, Blocked or N/A. A Fail needs a note saying what you saw. Results stay in this browser until you export them. Send the CSV to SaaScend.</p>
+  <p class="lead">{total} cases in {len(C.SUITES)} suites. Start with ACC, then the round 2 suites (SCOPE, MRG, SEND), then the round 1 suites as a regression check. Each suite says who runs it. Mark each case Pass, Fail, Blocked or N/A. A Fail needs a note saying what you saw. Results stay in this browser until you export them. Send the CSV to SaaScend.</p>
   <div class="runbar">
     <div><label for="tester">Tester</label><input id="tester" autocomplete="name" placeholder="Your name"></div>
     <div><label for="rundate">Date</label><input id="rundate" type="date"></div>
@@ -431,7 +478,7 @@ def signoff():
 
 JS = r'''
 (function(){
-  var KEY='xypher-pricing-uat-v1', st={};
+  var KEY='dxr-pricing-uat-v2', st={};
   try{ st=JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(e){ st={}; }
   st.r=st.r||{}; st.n=st.n||{}; st.so=st.so||{};
   function save(){ try{ localStorage.setItem(KEY,JSON.stringify(st)); }catch(e){} }
@@ -463,7 +510,7 @@ JS = r'''
     cases.forEach(function(el){ var id=el.dataset.id; rows.push([id,el.dataset.suite,el.dataset.title,st.r[id]||'',st.n[id]||'',tester.value,rd.value]); });
     var blob=new Blob([rows.map(function(r){return r.map(q).join(',');}).join('\n')],{type:'text/csv'});
     var a=document.createElement('a'); a.href=URL.createObjectURL(blob);
-    a.download='xypher-pricing-uat-'+(tester.value||'tester').replace(/\W+/g,'-').toLowerCase()+'-'+rd.value+'.csv';
+    a.download='dxr-pricing-uat-'+(tester.value||'tester').replace(/\W+/g,'-').toLowerCase()+'-'+rd.value+'.csv';
     document.body.appendChild(a); a.click(); setTimeout(function(){URL.revokeObjectURL(a.href); a.remove();},500);
   });
   document.getElementById('print').addEventListener('click',function(){ window.print(); });
@@ -480,15 +527,15 @@ def page():
 <html lang="en-GB"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>Xypher Pricing Desk UAT</title>
-<meta name="description" content="Demo guide, enablement and UAT test script for the Xypher Pricing Desk and DXR Cyber order form (sandbox).">
+<title>DXR Cyber Pricing Desk UAT</title>
+<meta name="description" content="Demo guide, enablement and UAT test script for the DXR Cyber Pricing Desk, approvals, e-signature and scoping (sandbox).">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23031F49'/%3E%3Cpath d='M8 23 16 8l8 15' stroke='%2300ACD4' stroke-width='3.5' fill='none' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600;700&display=swap">
 <style>{CSS}</style></head><body>
 {hero()}{toc()}
-<main>{access()}{how()}{demo()}{reps()}{catalogue()}{docgen()}{script()}{gaps()}{signoff()}</main>
-<footer><div class="wrap"><img src="data:image/png;base64,{LOGO}" alt="SaaScend">Prepared by SaaScend for Xypher · sandbox build XYP-PRICING-001/003 · 25 Sep 2026 · internal, not for customers</div></footer>
+<main>{round2()}{access()}{how()}{demo()}{reps()}{catalogue()}{docgen()}{script()}{gaps()}{signoff()}</main>
+<footer><div class="wrap"><img src="data:image/png;base64,{LOGO}" alt="SaaScend">Prepared by SaaScend for DXR Cyber · sandbox builds XYP-PRICING-001–009, XYP-SCOPE-001–002 · 21 Oct 2026 · internal, not for customers</div></footer>
 <script>{JS}</script></body></html>'''
 
 
