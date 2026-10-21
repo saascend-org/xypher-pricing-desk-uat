@@ -218,6 +218,8 @@ def round2():
         ('SaaScend', 'Sets everyone up, simulates the customer signature on request, answers questions', 'SEND-04'),
     ]
     rr = ''.join(f'<tr><td><b>{r}</b></td><td>{w}</td><td>{c}</td></tr>' for r, w, c in roles)
+    e2e = ''.join(f'<tr><td><b>{esc(n)}</b></td><td>{esc(d)}</td><td>' + ''.join(a(u, esc(l)) for l, u in links) + '</td></tr>'
+                  for n, d, links in C.E2E)
     return f'''<section class="block" id="round2"><div class="wrap">
   <p class="eyebrow">Round 2 · start here</p><h2>What's new, and what to test first</h2>
   <div class="callout warn"><b>Awaiting cost data, but testing can start now.</b> 583 of the 727 active products have no cost loaded yet; DXR Cyber is filling in the cost template. Until a quote's lines all have costs, the desk shows <b>GP n/a</b> and the rule is the simpler one: <b>a discount over 40% needs manager approval</b>. Every flow below works today. The few cases that need a costed product say so and use <code>GRC-CE-009</code>. Once costs are loaded we re-run MRG-02/03 on real deals.</div>
@@ -238,6 +240,10 @@ def round2():
       <li>Export your CSV and send it to SaaScend.</li>
     </ol></div>
   </div>
+  <h3>See it end to end first</h3>
+  <p style="font-size:.92rem;color:var(--ink-soft)">Two fictional deals were run through the whole process on 21 Oct and kept, so managers can see every output before testing: the scoping document and PDF, the quote, both approvals in the Quote's Approval History, the order form, and the signed copy in Files.</p>
+  <div class="tblwrap"><table class="tbl reclinks"><tr><th>Deal</th><th>What it shows</th><th>Open</th></tr>{e2e}</table></div>
+  <p style="font-size:.88rem;color:var(--muted)">PandaDoc links open in DXR Cyber's PandaDoc workspace; log in there first. They are sandbox test documents, so the names start with <b>[DEV]</b>, they sit in the <b>SF-Sandbox</b> folder, and the customer signature was simulated. If PandaDoc says you don't have access, ask a workspace admin (Scott Goodwin) to share them.</p>
   <div class="callout"><b>In the sandbox:</b> PandaDoc sends silently to a SaaScend inbox, so customers never receive anything and SaaScend simulates the signature. Customer scoping emails go to whatever address the contact has, so use a test contact with your own email. Never use a real customer's opportunity.</div>
 </div></section>'''
 

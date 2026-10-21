@@ -420,6 +420,19 @@ SUITES = [
     },
 ]
 
+# Round 2 worked examples: two fictional deals run end to end on 21 Oct (kept, not cleaned up)
+PANDADOC = 'https://app.pandadoc.com/a/#/documents/'
+E2E = [
+    ('[E2E DEMO 2] Harbourline Logistics - Web App Pen Test',
+     'The full round 2 path: scope sent to the customer and verified, 45% pen-test discount approved, send approved, signed. Amount synced, contract 21 Oct 2026 to 20 Oct 2027, Close Won Task',
+     [('Opportunity', rec('Opportunity', '006Pu00000bp8sfIAA')), ('Quote', rec('Quote', '0Q0Pu000008MosnKAC')),
+      ('Scoping Document', rec('Scoping_Document__c', 'a0hPu00000AOfvcIAD')), ('PandaDoc', PANDADOC + 'AS7WpbrSHVN6yixppoMZ94')]),
+    ('[E2E DEMO] Northwind Analytics - Web App Pen Test',
+     'The first run, before round 2\'s fixes: scope completed by the rep, approvals, signed. Useful as a before and after',
+     [('Opportunity', rec('Opportunity', '006Pu00000boo1nIAA')), ('Quote', rec('Quote', '0Q0Pu000008MkpBKAS')),
+      ('Scoping Document', rec('Scoping_Document__c', 'a0hPu00000AOZOgIAP')), ('PandaDoc', PANDADOC + '2g4nzDKTSYfuUKjftAxLuX')]),
+]
+
 KNOWN_GAPS = [
     ('Product costs: 583 of 727 active products have no cost yet', 'DXR Cyber (Lisa Washer), via the cost template', 'GP checks only apply to fully costed quotes. Until then, quotes with an uncosted line show "GP n/a" and fall back to the rule "over 40% discount needs approval". Every flow can be tested now'),
     ('Who is in the test group: reps, their managers (approvers), technical verifiers', 'Tej / DXR Cyber', "SaaScend sets each tester's Manager, the managers' PandaDoc seat flag and the scoping permission sets before testing starts"),
