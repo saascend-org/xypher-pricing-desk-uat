@@ -214,6 +214,7 @@ def round2():
         ('Sales rep', 'Requests scoping, builds and submits quotes, requests the send', 'SCOPE-01–04, MRG, SEND'),
         ('Sales manager', 'Approves or rejects price and send requests; must have a PandaDoc seat', 'MRG-06, SEND-03'),
         ('Technical verifier', 'Verifies and closes scoping (DXR Scoping Technical)', 'SCOPE-05–06'),
+        ('Channel (Kristian)', 'Partner deals: the discount set on the partner account, eligible lines, overrides, and over-40% partner discounts', 'CHAN'),
         ('Catalogue manager', 'Loads costs as they arrive (Cost Upload)', 'COST'),
         ('SaaScend', 'Sets everyone up, simulates the customer signature on request, answers questions', 'SEND-04'),
     ]
@@ -235,7 +236,7 @@ def round2():
     </ul></div>
     <div class="card"><h3 style="margin-top:0">Suggested order</h3><ol class="steps">
       <li><b>ACC</b>: log in and find things.</li>
-      <li><b>SCOPE</b>, then <b>MRG</b>, then <b>SEND</b>: the new round, on your own <code>[UAT]</code> opportunities.</li>
+      <li><b>SCOPE</b>, then <b>MRG</b>, then <b>SEND</b>: the new round, on your own <code>[UAT]</code> opportunities. Kristian also runs <b>CHAN</b> (channel partners).</li>
       <li>The round 1 suites (DESK to PERM) as a regression check, on the <code>[DEMO]</code> records.</li>
       <li>Export your CSV and send it to SaaScend.</li>
     </ol></div>
