@@ -244,6 +244,27 @@ def round2():
   <p style="font-size:.92rem;color:var(--ink-soft)">Two fictional deals were run through the whole process on 21 Oct and kept, so managers can see every output before testing: the scoping document and PDF, the quote, both approvals in the Quote's Approval History, the order form, and the signed copy in Files.</p>
   <div class="tblwrap"><table class="tbl reclinks"><tr><th>Deal</th><th>What it shows</th><th>Open</th></tr>{e2e}</table></div>
   <p style="font-size:.88rem;color:var(--muted)">PandaDoc links open in DXR Cyber's PandaDoc workspace; log in there first. They are sandbox test documents, so the names start with <b>[DEV]</b>, they sit in the <b>SF-Sandbox</b> folder, and the customer signature was simulated. If PandaDoc says you don't have access, ask a workspace admin (Scott Goodwin) to share them.</p>
+  <h3 id="approve">How a manager approves, and what it triggers</h3>
+  <div class="grid2">
+    <div class="card"><h3 style="margin-top:0">Approving in Salesforce</h3><ol class="steps">
+      <li><b>The request arrives.</b> When a rep clicks <b>Request to Send</b> (or <b>Save &amp; Submit for Approval</b>), it goes to their Manager in Salesforce. The manager sees it in the <b>bell</b> notifications and on <b>Home → Items to Approve</b>, and receives a Salesforce approval email if their email settings allow.</li>
+      <li><b>Open it.</b> The Approval Request shows the quote, the total, GP (costed lines only), how many lines have no cost, the reason it needs approval, and the rep's note. <b>Signature Status: Requested</b> means this is a request to send the order form.</li>
+      <li><b>Decide.</b> Click <b>Approve</b> or <b>Reject</b>, adding a comment if you like (a rejection comment is shown to the rep in the desk). <b>Reassign</b> passes it to someone else.</li>
+    </ol></div>
+    <div class="card"><h3 style="margin-top:0">What the approval triggers</h3>
+      <p><b>Approving a send request is what sends the order form to the customer.</b> Nothing goes to the customer before it, and a rejection sends nothing. There is no further step for the rep.</p>
+      <ol class="steps">
+        <li>Approval: the quote moves to <b>Sending</b>. The approval is DXR Cyber's acceptance and prints on the order form with the approver's name and date.</li>
+        <li>Within about a minute (at most 15), Salesforce uploads the order form to PandaDoc and <b>PandaDoc emails the customer</b> to sign, sent as the approving manager. The desk shows <b>Out for signature</b>, and the Opportunity syncs to the quote.</li>
+        <li>The customer signs in PandaDoc. Salesforce picks it up at the next 15-minute check and files the signed copy.</li>
+      </ol>
+      <p style="font-size:.9rem"><b>Price-only approvals don't send anything.</b> If the rep used <b>Save &amp; Submit</b> (Signature Status <b>Not Sent</b> on the request), approving only clears the price; the rep then uses Request to Send, which comes back to you for the send. Reps can avoid the second step by using Request to Send straight away: one approval covers the price and the send.</p>
+    </div>
+  </div>
+  <div class="shots2">
+    {fig('r2-approval-request.png', 'What the manager sees: a send request (Signature Status <b>Requested</b>) with the reason and the rep’s note. Approve sends it to the customer. ' + BLURNOTE)}
+    {fig('r2-out-for-signature.png', 'Straight after approval, in the rep’s desk: <b>Out for signature</b>, synced, with View in PandaDoc and Revise &amp; Resend. ' + BLURNOTE)}
+  </div>
   <div class="callout"><b>In the sandbox:</b> PandaDoc sends silently to a SaaScend inbox, so customers never receive anything and SaaScend simulates the signature. Customer scoping emails go to whatever address the contact has, so use a test contact with your own email. Never use a real customer's opportunity.</div>
 </div></section>'''
 
