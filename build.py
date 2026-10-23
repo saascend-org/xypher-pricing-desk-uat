@@ -179,19 +179,19 @@ def hero():
     return f'''<header class="hero"><div class="wrap">
   <div class="brandbar"><img src="data:image/png;base64,{LOGO}" alt="SaaScend">
     <span class="tag">Sandbox · internal · not for customers</span></div>
-  <p class="eyebrow">DXR Cyber · Round 2 · scoping, margin, approvals and e-signature</p>
+  <p class="eyebrow">DXR Cyber · Round 3 · discount controls, catalogue flags, flat renewals and mistake-proofing</p>
   <h1>Pricing Desk, Approvals &amp; E-signature</h1>
   <p>Demo guide, enablement and the UAT test script for the small test group. Every case below has to pass before we plan the production release.</p>
   <div class="facts">
     <span><b>Org</b> Xypher_Sandbox_FC (full-copy sandbox)</span>
-    <span><b>Testing</b> open · cost data still to come</span>
-    <span><b>Build status</b> Apex 218/218 · browser UAT 9 suites green · 21 Oct</span>
-    <span><b>As of</b> 21 Oct 2026</span>
+    <span><b>Testing</b> open · catalogue v4 load still to come</span>
+    <span><b>Build status</b> Apex 182/182 pricing tests · browser UAT 9 suites green · 23 Oct</span>
+    <span><b>As of</b> 23 Oct 2026</span>
   </div>
 </div></header>'''
 
 
-TOC = [('round2', 'Round 2: start here'), ('access', 'Access & links'), ('how', 'How it works'), ('demo', 'Demo walkthrough'),
+TOC = [('round2', 'What\'s new: start here'), ('access', 'Access & links'), ('how', 'How it works'), ('demo', 'Demo walkthrough'),
        ('reps', 'Rep enablement'), ('catalogue', 'Catalogue & costs'), ('docgen', 'Document generation'),
        ('script', 'Test script'), ('gaps', 'Known gaps'), ('signoff', 'Sign-off')]
 
@@ -203,27 +203,32 @@ def toc():
 
 def round2():
     new = [
+        ('<span class="pill now">New</span> One discount rule', 'No GP minimum any more: GP is information only. A line more than <b>20% off</b> is <b>flagged</b> (amber) for your manager, who sees it when approving the send. A partner\'s agreed % doesn\'t count. A flag never locks the quote: save, sync and generate as normal.', 'MRG'),
+        ('<span class="pill now">New</span> One approval, at send', 'There is no separate "Submit for Approval". <b>Request to Send</b> is the only approval, and it covers the price and the send.', 'SEND'),
+        ('<span class="pill now">New</span> Catalogue flags', 'Some products <b>can\'t be discounted</b> (an uplift is fine). Some need a <b>vendor quote</b>: the rep types the vendor\'s cost per unit before the quote can go out. Catalogue managers set both, plus <b>Annual renewal</b>, with ticks in the catalogue.', 'FLAG'),
+        ('<span class="pill now">New</span> Flat renewals', 'A renewal of a won deal with no change in scope or price shows <b>Send</b>: it goes to the customer as your manager with no approval step.', 'RENEW'),
+        ('<span class="pill now">New</span> Mistake-proofing', 'A sent quote is locked on every screen (Revise &amp; Resend to change it). Typos in adjustments, zero quantities, empty quotes and retired products are caught with a plain message. Generate PDF and Sync save first.', 'SAFE'),
         ('Scoping', 'Request Scoping asks: <b>send it to the customer</b> or <b>complete it yourself</b>. A sent form can be taken back with <b>Complete it myself</b>; the customer\'s link stops working. Closing a scope is now <b>engineer verification</b>: a technical verifier ticks "I have checked these figures", and nobody verifies a scope they filled in.', 'SCOPE'),
-        ('Margin and GP', 'Net revenue = price − licence cost; GP = net revenue − delivery cost. A <b>fully costed</b> quote below <b>40% GP</b> needs manager approval, and the <b>Margin</b> card says how to pass ("cut the discount to 57%", with Apply). A quote with any uncosted line shows <b>GP n/a</b> and falls back to "over 40% discount needs approval".', 'MRG'),
-        ('Approvals', '<b>Save &amp; Submit</b> goes to your Salesforce manager with the reason filled in. Recall, Edit &amp; Resubmit, and a notification either way. Partner deals pre-fill the partner\'s discount on eligible lines.', 'MRG'),
+        ('Margin and GP', 'Net revenue = price − licence cost; GP = net revenue − delivery cost, shown on the <b>Margin</b> card. A quote with any uncosted line shows <b>GP n/a</b>. Partner deals pre-fill the partner\'s discount on eligible lines.', 'MRG'),
         ('Send for e-signature', '<b>Request to Send</b> (from Proposal onwards) goes to your manager; their approval is DXR Cyber\'s acceptance. PandaDoc then sends the order form <b>as the manager</b>, so reps need no PandaDoc licence. Revise &amp; Resend withdraws a sent version.', 'SEND'),
         ('Signed deals tidy themselves', 'The Opportunity syncs to the quote when it goes out. On signature: signed PDF on the Quote and Opportunity, contract dates from the signing date, and a "Close Won" Task plus a notification for the owner.', 'SEND'),
     ]
     rows = ''.join(f'<tr><td><b>{t}</b></td><td>{d}</td><td><a href="#suite-{sid}">{sid}</a></td></tr>' for t, d, sid in new)
     roles = [
-        ('Sales rep', 'Requests scoping, builds and submits quotes, requests the send', 'SCOPE-01–04, MRG, SEND'),
-        ('Sales manager', 'Approves or rejects price and send requests; must have a PandaDoc seat', 'MRG-06, SEND-03'),
+        ('Sales rep', 'Requests scoping, builds quotes, requests the send', 'SCOPE-01–04, MRG, SEND, FLAG, SAFE'),
+        ('Account manager', 'Renewals: flat renewals send without approval', 'RENEW'),
+        ('Sales manager', 'Approves or rejects send requests (seeing any flagged discounts); must have a PandaDoc seat', 'MRG-06, SEND-03, SEND-08'),
         ('Technical verifier', 'Verifies and closes scoping (DXR Scoping Technical)', 'SCOPE-05–06'),
-        ('Channel (Kristian)', 'Partner deals: the discount set on the partner account, eligible lines, overrides, and over-40% partner discounts', 'CHAN'),
-        ('Catalogue manager', 'Loads costs as they arrive (Cost Upload)', 'COST'),
+        ('Channel (Kristian)', 'Partner deals: the discount set on the partner account, eligible lines, overrides, and the partner\'s % not counting towards the flag', 'CHAN'),
+        ('Catalogue manager', 'Loads costs as they arrive (Cost Upload); sets the product flags', 'COST, CAT-09'),
         ('SaaScend', 'Sets everyone up, simulates the customer signature on request, answers questions', 'SEND-04'),
     ]
     rr = ''.join(f'<tr><td><b>{r}</b></td><td>{w}</td><td>{c}</td></tr>' for r, w, c in roles)
     e2e = ''.join(f'<tr><td><b>{esc(n)}</b></td><td>{esc(d)}</td><td>' + ''.join(a(u, esc(l)) for l, u in links) + '</td></tr>'
                   for n, d, links in C.E2E)
     return f'''<section class="block" id="round2"><div class="wrap">
-  <p class="eyebrow">Round 2 · start here</p><h2>What's new, and what to test first</h2>
-  <div class="callout warn"><b>Awaiting cost data, but testing can start now.</b> 583 of the 727 active products have no cost loaded yet; DXR Cyber is filling in the cost template. Until a quote's lines all have costs, the desk shows <b>GP n/a</b> and the rule is the simpler one: <b>a discount over 40% needs manager approval</b>. Every flow below works today. The few cases that need a costed product say so and use <code>GRC-CE-009</code>. Once costs are loaded we re-run MRG-02/03 on real deals.</div>
+  <p class="eyebrow">Start here</p><h2>What's new, and what to test first</h2>
+  <div class="callout warn"><b>Catalogue v4 is still to load, but testing can start now.</b> Lisa's v4 sheet (costs and the new flags) loads once five questions are answered. Until then most products have no cost (the desk shows <b>GP n/a</b>), and two test products, <code>UAT-NODISC-001</code> and <code>UAT-VENDOR-001</code>, carry the new flags. The 20% discount flag works on every product today.</div>
   <div class="tblwrap"><table class="tbl"><tr><th>Change</th><th>What you'll see</th><th>Tests</th></tr>{rows}</table></div>
   <h3>Who does what</h3>
   <div class="tblwrap"><table class="tbl"><tr><th>Role</th><th>In this round</th><th>Cases</th></tr>{rr}</table></div>
@@ -236,7 +241,8 @@ def round2():
     </ul></div>
     <div class="card"><h3 style="margin-top:0">Suggested order</h3><ol class="steps">
       <li><b>ACC</b>: log in and find things.</li>
-      <li><b>SCOPE</b>, then <b>MRG</b>, then <b>SEND</b>: the new round, on your own <code>[UAT]</code> opportunities. Kristian also runs <b>CHAN</b> (channel partners).</li>
+      <li><b>Round 3</b>: <b>MRG</b>, <b>FLAG</b>, <b>RENEW</b> and <b>SAFE</b>, plus the updated <b>SEND</b> (07–08), <b>DISC</b>, <b>CHAN-06</b> and <b>CAT-09</b>.</li>
+      <li><b>SCOPE</b> and <b>SEND</b> on your own <code>[UAT]</code> opportunities. Kristian also runs <b>CHAN</b> (channel partners).</li>
       <li>The round 1 suites (DESK to PERM) as a regression check, on the <code>[DEMO]</code> records.</li>
       <li>Export your CSV and send it to SaaScend.</li>
     </ol></div>
@@ -248,8 +254,8 @@ def round2():
   <h3 id="approve">How a manager approves, and what it triggers</h3>
   <div class="grid2">
     <div class="card"><h3 style="margin-top:0">Approving in Salesforce</h3><ol class="steps">
-      <li><b>The request arrives.</b> When a rep clicks <b>Request to Send</b> (or <b>Save &amp; Submit for Approval</b>), it goes to their Manager in Salesforce. The manager sees it in the <b>bell</b> notifications and on <b>Home → Items to Approve</b>, and receives a Salesforce approval email if their email settings allow.</li>
-      <li><b>Open it.</b> The Approval Request shows the quote, the total, GP (costed lines only), how many lines have no cost, the reason it needs approval, and the rep's note. <b>Signature Status: Requested</b> means this is a request to send the order form.</li>
+      <li><b>The request arrives.</b> When a rep clicks <b>Request to Send</b>, it goes to their Manager in Salesforce. The manager sees it in the <b>bell</b> notifications and on <b>Home → Items to Approve</b>, and receives a Salesforce approval email if their email settings allow.</li>
+      <li><b>Open it.</b> The Approval Request shows the quote, the total, <b>Discount Flags</b> (any line more than 20% off beyond the partner's rate), GP (costed lines only), how many lines have no cost, and the rep's note. <b>Signature Status: Requested</b> means this is a request to send the order form.</li>
       <li><b>Decide.</b> Click <b>Approve</b> or <b>Reject</b>, adding a comment if you like (a rejection comment is shown to the rep in the desk). <b>Reassign</b> passes it to someone else.</li>
     </ol></div>
     <div class="card"><h3 style="margin-top:0">What the approval triggers</h3>
@@ -259,7 +265,7 @@ def round2():
         <li>Within about a minute (at most 15), Salesforce uploads the order form to PandaDoc and <b>PandaDoc emails the customer</b> to sign, sent as the approving manager. The desk shows <b>Out for signature</b>, and the Opportunity syncs to the quote.</li>
         <li>The customer signs in PandaDoc. Salesforce picks it up at the next 15-minute check and files the signed copy.</li>
       </ol>
-      <p style="font-size:.9rem"><b>Price-only approvals don't send anything.</b> If the rep used <b>Save &amp; Submit</b> (Signature Status <b>Not Sent</b> on the request), approving only clears the price; the rep then uses Request to Send, which comes back to you for the send. Reps can avoid the second step by using Request to Send straight away: one approval covers the price and the send.</p>
+      <p style="font-size:.9rem"><b>One approval only.</b> There is no separate price approval: the send request carries any flagged discounts, and approving it covers both. A <b>flat renewal</b> skips the approval altogether. Once requested, the quote is locked until the send finishes (Revise &amp; Resend to change it).</p>
     </div>
   </div>
   <div class="shots2">
@@ -306,8 +312,8 @@ def how():
     steps = [
         ('1', 'Scoping', 'Sent to the customer or completed by the rep, then verified and closed by the technical team. The scoping PDF is filed on the Opportunity.'),
         ('2', 'Pricing Desk', 'The rep builds a quote from the catalogue (products, prices, bundles and costs in the Xypher Catalogue app). Margin is checked live.'),
-        ('3', 'Approval', 'Below 40% GP (fully costed), or over 40% discount on a line with no cost: the rep\'s manager approves in Salesforce.'),
-        ('4', 'Request to Send', 'From Proposal onwards. The manager approves the send, which is DXR Cyber\'s acceptance. The Opportunity syncs to the quote.'),
+        ('3', 'Discount flags', 'A line more than 20% off (beyond any partner\'s agreed %) is flagged for the manager. Nothing is held.'),
+        ('4', 'Request to Send', 'From Proposal onwards. The manager approves the send (seeing the flags), which is DXR Cyber\'s acceptance. A flat renewal skips this. The Opportunity syncs to the quote.'),
         ('5', 'PandaDoc', 'The order form goes out for e-signature as the manager. Status is checked every 15 minutes.'),
         ('6', 'Signed', 'Signed PDF on the Quote and Opportunity, contract dates set, and the owner is told to Close Won.'),
     ]
@@ -319,15 +325,14 @@ def how():
   {fig('01b-launcher-card.png', 'The Pricing Desk tab on every Opportunity: the synced quote, its TCV and ARR, and the way into the desk.')}
   <div class="tblwrap"><table class="tbl">
     <tr><th>Rule</th><th>What the user sees</th></tr>
-    <tr><td><b>40% GP minimum</b> (fully costed quotes)</td><td>Below 40% GP the quote needs manager approval. The Margin card shows the bar and suggests the change that passes, with an Apply button.</td></tr>
-    <tr><td><b>Lines with no cost</b></td><td>GP can't be checked, so the desk shows "GP n/a". A discount over 40% on any line needs manager approval instead.</td></tr>
-    <tr><td><b>Until approved</b></td><td>The quote saves as Approval Required. Sync &amp; Confirm and Generate PDF stay locked. Salesforce's own quote-line editor can't get round it. Over 100%, or a line past the contract end, is Blocked outright.</td></tr>
-    <tr><td><b>Sending for signature</b></td><td>Only at Proposal / Bid Submitted or Negotiation, and only with the manager's approval. Reps need no PandaDoc licence.</td></tr>
+    <tr><td><b>20% discount flag</b></td><td>A line more than 20% off (not counting a partner's agreed %) is flagged in amber; the manager sees it when approving the send. It never locks the quote. GP is shown for information only.</td></tr>
+    <tr><td><b>Blocked</b></td><td>Over 100% off, a line past the contract end, a discount on a product that can't be discounted, a vendor-quote line without a confirmed vendor cost, an adjustment the desk can't read, or no products. Sync, PDF and send are refused until fixed. The same rules apply on Salesforce's own quote screens.</td></tr>
+    <tr><td><b>Sending for signature</b></td><td>Only at Proposal / Bid Submitted or Negotiation, and only with the manager's approval (a flat renewal needs none). Reps need no PandaDoc licence. From the request onwards the quote is locked everywhere; Revise &amp; Resend unlocks it.</td></tr>
     <tr><td><b>Partner deals</b></td><td>The partner Account's Partner Discount % is pre-filled on eligible lines (not licences, third-party, hardware or channel-priced lines).</td></tr>
     <tr><td><b>Mandatory components</b></td><td>Added automatically with their parent. They can't be removed on their own.</td></tr>
     <tr><td><b>Choice groups</b></td><td>SOC maturity: exactly one, Standard by default. SIEM platform: none or one.</td></tr>
     <tr><td><b>Revenue class and term</b></td><td>Annual-recurring lines × term years; one-offs count once. TCV is the Opportunity Amount.</td></tr>
-    <tr><td><b>Adjustments</b></td><td><code>15</code> or <code>15%</code> is a discount, <code>£250</code> is amount off, <code>+8%</code> and <code>+£500</code> are uplifts.</td></tr>
+    <tr><td><b>Adjustments</b></td><td><code>15</code> or <code>15%</code> is a discount, <code>£250</code> (or <code>£1,250</code>) is amount off, <code>+8%</code> and <code>+£500</code> are uplifts. Anything else is refused.</td></tr>
     <tr><td><b>Gross profit</b></td><td>Net revenue = price − licence cost; GP = net revenue − delivery cost. Shown as a % only when every line is costed.</td></tr>
     <tr><td><b>Contract dates and part-term lines</b></td><td>Set the contract start (or leave blank for "on signature"); the end is calculated. A line can start later or end earlier, in whole months. Recurring lines are charged for the months they run; <b>annual recurring stays the full annual rate</b>. Renewals are priced from the lines still running at the end.</td></tr>
   </table></div>
@@ -338,15 +343,15 @@ def demo():
     rows = ''.join(f'<tr><td><b>{k}</b></td><td>{esc(n)}</td><td>{esc(s)}</td><td>{esc(w)}</td></tr>' for k, n, s, w in C.DEMO_RECORDS)
     return f'''<section class="block" id="demo"><div class="wrap">
   <p class="eyebrow">15-minute demo</p><h2>Demo walkthrough</h2>
-  <p class="lead">Five fictional deals are staged so every part of the story can be shown without building anything in front of the audience, except the last one, which is built live.</p>
+  <p class="lead">Six fictional deals are staged so every part of the story can be shown without building anything in front of the audience, except the last one, which is built live.</p>
   <div class="tblwrap"><table class="tbl"><tr><th>#</th><th>Opportunity</th><th>State</th><th>What it shows</th></tr>{rows}</table></div>
   <div class="shots2">
     {fig('01-opportunity-record.png', 'Harbourline after sync: the Opportunity Products are the quote lines.')}
-    {fig('02-desk-quote-list.png', 'Northshire in the desk: one quote ready to sync, one over the cap. ' + BLURNOTE)}
+    {fig('02-desk-quote-list.png', 'Northshire in the desk: one quote ready to sync, one flagged for the manager. ' + BLURNOTE)}
   </div>
   <div class="card"><h3 style="margin-top:0">Running order</h3><ol class="steps">
     <li><b>The finished article (2 min).</b> {a(C.opp('A'), 'Harbourline')}: Amount £344,595 is the quote's TCV, and the Quote Summary shows annual £114,865. Open the Quote → Quote PDFs → the DXR Cyber order form.</li>
-    <li><b>The guard-rail (2 min).</b> {a(C.desk('C'), 'Northshire in the desk')}: open the 45% quote to show "needs manager approval" and the greyed-out Sync and PDF. Change it to 40%, Save, and it turns Ready.</li>
+    <li><b>The guard-rail (2 min).</b> {a(C.desk('C'), 'Northshire in the desk')}: open the 45% quote to show the amber flag and "Your manager will see…". Type 150: it turns red and Blocked. Put it back.</li>
     <li><b>Sync live (2 min).</b> Open the other Northshire quote and click Sync &amp; Confirm. Back on the Opportunity, Amount is £6,915 and the Products are filled in. Generate PDF.</li>
     <li><b>A two-service deal (2 min).</b> {a(C.opp('B'), 'Kestrel &amp; Vane')}: its order form has one delivery section per service line, and the £3,600 one-off sits in year 1.</li>
     <li><b>Build one (5 min).</b> {a(C.desk('E'), 'Brightwater')}: New Quote → search <code>SOC-CORE-1.5TB-OPS</code> → the bundle arrives → switch maturity → add a SIEM tier → 10% off → Save → Sync → Generate PDF.</li>
@@ -367,15 +372,17 @@ def reps():
       <li><b>New Quote</b>. Name it and set the term in months. Check the commercial terms dropdowns.</li>
       <li>Add products by <b>search</b> (name or SKU) or by <b>service-line chip</b>. Packages bring their mandatory components with them.</li>
       <li>Click a package line to open <b>Bundle &amp; Add-ons</b>: pick the maturity level, and the SIEM tier if one is needed.</li>
-      <li>Type adjustments in <b>Adj.</b> on each line. Watch the <b>Margin</b> card: if it says approval is needed, Apply its suggestion or use <b>Save &amp; Submit for Approval</b>.</li>
+      <li>Type adjustments in <b>Adj.</b> on each line. Over 20% off turns amber: your manager will see it when you send. For a vendor-quote product, type the vendor's cost per unit under the line.</li>
       <li><b>Save</b>. When the deal reaches Proposal, click <b>Request to Send</b>: your manager approves and PandaDoc sends it as them.</li>
       <li>Or, to keep working by hand: <b>Sync &amp; Confirm</b>, then <b>Generate PDF</b>.</li>
     </ol></div>
     <div class="card"><h3 style="margin-top:0">Good to know</h3><ul>
       <li><b>Edit after sync?</b> Just Save. A synced quote pushes changes to the Opportunity by itself.</li>
       <li><b>Try an alternative?</b> <b>Save as New Quote</b> makes a copy; only the synced one drives the Opportunity.</li>
-      <li><b>Needs approval?</b> The Margin card says why and what would pass. Apply it, or submit with a reason; your manager decides.</li>
-      <li><b>GP n/a?</b> At least one line has no cost yet, so only discounts are checked (over 40% needs approval).</li>
+      <li><b>Amber line?</b> It is more than 20% off. Nothing stops you: add context in the Request to Send note so your manager can approve.</li>
+      <li><b>Red line?</b> Something has to be fixed first: the message on the line says what.</li>
+      <li><b>GP n/a?</b> At least one line has no cost yet. It doesn't stop anything.</li>
+      <li><b>Can't change a sent quote?</b> Use <b>Revise &amp; Resend</b>, or <b>Save as New</b> for a copy.</li>
       <li><b>Monthly-priced items</b> (e.g. SIEM platform tiers) come in at qty 12 for a year.</li>
       <li><b>Product missing?</b> It may be hidden or retired in the Catalogue. Ask the catalogue manager.</li>
       <li><b>Deal notes</b> are for context the quote doesn't show. They don't print on the order form.</li>
@@ -383,7 +390,12 @@ def reps():
     </ul></div>
   </div>
   {fig('03-desk-soc-bundle.png', 'A SOC package: mandatory components locked, one maturity level, one SIEM tier, and totals that update as you type. ' + BLURNOTE)}
-  {fig('04-desk-blocked.png', 'Over the cap: the 45% line turns red, and Sync &amp; Confirm and Generate PDF are disabled. ' + BLURNOTE)}
+  {fig('04-desk-flagged.png', 'Over 20%: the 45% line turns amber and the bar says what the manager will see. Nothing is locked. ' + BLURNOTE)}
+  <div class="shots2">
+    {fig('10-not-discountable.png', 'A product that can’t be discounted: 10% off turns the line red and blocks the quote. An uplift is fine. ' + BLURNOTE)}
+    {fig('11-vendor-cost.png', 'A vendor-quoted product: blocked until the rep types the vendor’s cost per unit (and its reference). ' + BLURNOTE)}
+  </div>
+  {fig('12-flat-renewal-send.png', 'A flat renewal: same value as last term, no change in scope, so the button is <b>Send</b> and no approval is needed. ' + BLURNOTE)}
 </div></section>'''
 
 
@@ -401,6 +413,7 @@ def catalogue():
     <tr><td>Catalogue health</td><td><b>Data Quality</b> tiles</td><td>e.g. no cost loaded (613), service-line gap, leftover -CH codes</td></tr>
   </table></div>
   {fig('06-catalogue-products.png', 'Products tab, searched for SOC-MON: price and cost edit inline, and Actions holds Hide, Retire and Bundle editor. ' + BLURNOTE)}
+  {fig('09-catalogue-flags.png', 'The Flags column: <b>Disc.</b> (can be discounted), <b>Vendor</b> (vendor quote required) and <b>Renews</b> (annual renewal). A tick saves at once and is logged. ' + BLURNOTE)}
   <div class="shots2">
     {fig('07-catalogue-data-quality.png', 'Data Quality: what still needs fixing in the catalogue.')}
     {fig('08-cost-upload-preview.png', 'Cost Upload preview: only matched rows apply. Unknown, duplicate and invalid rows are flagged. ' + BLURNOTE)}
@@ -467,7 +480,7 @@ def script():
                  + ''.join(case_html(s['id'], c) for c in s['cases']) + '</div>')
     return f'''<section class="block" id="script"><div class="wrap">
   <p class="eyebrow">UAT</p><h2>Test script</h2>
-  <p class="lead">{total} cases in {len(C.SUITES)} suites. Start with ACC, then the round 2 suites (SCOPE, MRG, SEND), then the round 1 suites as a regression check. Each suite says who runs it. Mark each case Pass, Fail, Blocked or N/A. A Fail needs a note saying what you saw. Results stay in this browser until you export them. Send the CSV to SaaScend.</p>
+  <p class="lead">{total} cases in {len(C.SUITES)} suites. Start with ACC, then the round 3 suites (MRG, FLAG, RENEW, SAFE and the updated SEND, DISC, CHAN-06, CAT-09), then the rest as a regression check. Each suite says who runs it. Mark each case Pass, Fail, Blocked or N/A. A Fail needs a note saying what you saw. Results stay in this browser until you export them. Send the CSV to SaaScend.</p>
   <div class="runbar">
     <div><label for="tester">Tester</label><input id="tester" autocomplete="name" placeholder="Your name"></div>
     <div><label for="rundate">Date</label><input id="rundate" type="date"></div>
