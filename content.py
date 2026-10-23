@@ -82,7 +82,7 @@ TESTER = {
 }
 
 DEMO_RECORDS = [
-    ('A', '[DEMO] Harbourline - Managed SOC', 'Synced. Amount £344,595, annual £114,865, 11 products. Order form on the Quote',
+    ('A', '[DEMO] Harbourline - Managed SOC', 'Synced. Amount £632,101.44, annual £210,700.48, 11 products. Order form on the Quote',
      'The SOC tier bundle, Low maturity, 90-day SIEM tier (qty 12), 10% off operational effort'),
     ('B', '[DEMO] Kestrel & Vane - LIMA and Forensics', 'Synced. Amount £55,920, annual £17,440 + £3,600 one-off. Order form on the Quote',
      'Licences plus an hourly project: two delivery sections, the one-off lands in year 1'),
@@ -159,7 +159,7 @@ SUITES = [
              ['Change it to <b>20%</b>.'],
              'The amber flag and the note disappear.'),
             ('MRG-05', 'A line with no cost',
-             ['Add <code>PT-WEB-001</code> (no cost loaded). Set its <b>Adj.</b> to <b>25%</b>.'],
+             ['Add <code>PT-DRIVE-WIPE-001</code> (no cost loaded: held while Lisa checks it). Set its <b>Adj.</b> to <b>25%</b>.'],
              'The bar shows <b>GP n/a · 1 line uncosted</b> (hover for the costed-lines figure); the Margin card says "GP on costed lines only". The 25% line is flagged in the same way as a costed one.'),
             ('MRG-06', 'The manager sees the flags when approving the send',
              ['Move the deal to Proposal and click <b>Request to Send</b> (see SEND-02). <b>Manager:</b> open the approval request.'],
@@ -232,7 +232,7 @@ SUITES = [
 
     {
         'id': 'FLAG', 'title': 'Catalogue flags: not discountable and vendor quotes', 'who': 'Sales reps',
-        'note': 'New in catalogue v4. Until Lisa\'s v4 load, two test products carry the flags: <code>UAT-NODISC-001</code> (can\'t be discounted, £1,000) and <code>UAT-VENDOR-001</code> (vendor quote required, £2,000/yr). Use a fresh <code>[UAT]</code> opportunity.',
+        'note': 'Loaded with catalogue v5: 69 products can\'t be discounted and 80 need a vendor quote (e.g. the SIEM tiers). The cases use two test products with the same flags: <code>UAT-NODISC-001</code> (can\'t be discounted, £1,000) and <code>UAT-VENDOR-001</code> (vendor quote required, £2,000/yr). Use a fresh <code>[UAT]</code> opportunity.',
         'cases': [
             ('FLAG-01', 'A product that can\'t be discounted',
              ['New Quote, add <code>UAT-NODISC-001</code>. Set <b>Adj.</b> to <b>10%</b>.'],
@@ -310,7 +310,7 @@ SUITES = [
             ('DESK-04', 'Add a SOC package',
              ['Name the quote. Set <b>Term (months)</b> to <b>36</b>.',
               'Search <code>SOC-CORE-1.5TB-OPS</code> and click <b>Add</b>.'],
-             '<b>10 lines</b> appear: the operational-effort line, 8 components tagged <i>Mandatory Bundle</i> and <b>SOC Monitoring (Standard Effort)</b> tagged <i>Choice</i>. Quote Summary: <b>Annual recurring £89,095</b>, <b>TCV £267,285</b>.'),
+             '<b>10 lines</b> appear: the operational-effort line, 8 components tagged <i>Mandatory Bundle</i> and <b>SOC Monitoring (Standard Effort)</b> tagged <i>Choice</i>. Quote Summary: <b>Annual recurring £176,530</b>, <b>TCV £529,590</b>.'),
             ('DESK-05', 'Mandatory lines are locked',
              ['Try to delete one of the <i>Mandatory Bundle</i> lines.'],
              'You can\'t remove it on its own: the delete control is disabled. Only the parent line removes the package.'),
@@ -324,11 +324,11 @@ SUITES = [
              '<b>Bundle &amp; Add-ons</b> lists the locked mandatory items. <b>Maturity level (choose one)</b> has 5 options with Standard selected. <b>SIEM platform, optional, one at most</b> offers None plus the 30, 90 and 180-day options.'),
             ('BND-02', 'Switch maturity',
              ['Select <b>Low Maturity (High Effort)</b>.'],
-             'The Standard line is replaced, so there is still exactly one maturity line. Annual recurring becomes <b>£93,595</b>.'),
+             'The Standard line is replaced, so there is still exactly one maturity line. Annual recurring becomes <b>£181,030</b>.'),
             ('BND-03', 'Add a SIEM platform tier',
              ['Select the <b>90 Days Retention</b> SIEM option.',
               'Then select 30 days, then 90 days again.'],
-             'It is added with <b>qty 12</b>, because it is priced monthly. Choosing another tier replaces it; there is never more than one. With 90 days, annual is <b>£118,015</b>.'),
+             'It is added with <b>qty 12</b>, because it is priced monthly. Choosing another tier replaces it; there is never more than one. With 90 days, annual is <b>£213,850.48</b>. SIEM tiers are vendor-quoted, so the line shows <b>Vendor cost not confirmed</b> and the quote is Blocked until you type the vendor\'s cost per unit: use any test value, e.g. <b>1000</b>, and ref <b>VQ-TEST</b>.'),
         ],
     },
     {
@@ -339,7 +339,7 @@ SUITES = [
              'The line turns amber with <b>Over 20% off: manager sees at send</b>, and the bar says what the manager will see. The quote saves as <b>Ready</b>; <b>Sync &amp; Confirm</b> and <b>Generate PDF</b> still work.'),
             ('DISC-02', 'Bring it down',
              ['Change the adjustment to <b>20%</b>. Backspace and retype normally.', 'Click <b>Save</b>.'],
-             'Annual <b>£111,715</b>, TCV <b>£335,145</b>. No flag. Status is <b>Ready</b>.'),
+             'Annual <b>£207,550.48</b>, TCV <b>£622,651.44</b>. No flag. Status is <b>Ready</b>.'),
             ('DISC-03', 'Other adjustment formats',
              ['On another line try <code>£250</code> (amount off), <code>+8%</code> (uplift), <code>+£500</code> and <code>£1,250</code> in turn.',
               'Set it back to <b>0</b> and Save.'],
@@ -357,10 +357,10 @@ SUITES = [
              'A success message appears. The quote shows as <b>Synced</b>.'),
             ('SYNC-02', 'The Opportunity reflects the quote',
              ['Click <b>Back to Opportunity</b> and refresh.'],
-             '<b>Amount = £335,145</b> (TCV), 11 Opportunity Products. The <b>Quote Summary</b> shows annual recurring £111,715 and a 36-month term. Gross profit shows <i>1 of 11 lines costed</i>, because most SOC costs are not loaded yet.'),
+             '<b>Amount = £622,651.44</b> (TCV), 11 Opportunity Products. The <b>Quote Summary</b> shows annual recurring £207,550.48 and a 36-month term. Gross profit covers all 11 lines (catalogue v5 loaded the costs).'),
             ('SYNC-03', 'Edits flow through without re-syncing',
              ['Re-open the quote, change 20% to <b>10%</b>, then Save.'],
-             'The Opportunity updates by itself: <b>Amount £344,595</b>.'),
+             'The Opportunity updates by itself: <b>Amount £632,101.44</b>.'),
             ('SYNC-04', 'Save as a new version',
              ['Click <b>Save as New Quote</b>.'],
              'A second quote appears in the list, <b>not synced</b>. The Opportunity Amount is unchanged.'),
@@ -375,7 +375,7 @@ SUITES = [
     },
     {
         'id': 'DATE', 'title': 'Contract dates and part-term lines', 'who': 'Sales reps, deal desk',
-        'note': 'Run after SYNC, on a <b>New Quote</b> on [DEMO] Brightwater with just the ISO 27001 line. Syncing it replaces the SYNC suite\'s quote on that deal. £1,100/yr is the catalogue v2 price.',
+        'note': 'Run after SYNC, on a <b>New Quote</b> on [DEMO] Brightwater with just the ISO 27001 line. Syncing it replaces the SYNC suite\'s quote on that deal. £1,100/yr is the catalogue v5 price. ISO 27001 is day-rated consultancy, so it never counts towards Renewal ARR (Annual Renewal = No).',
         'cases': [
             ('DATE-01', 'Contract start and the calculated end',
              ['New Quote, term <b>36</b>. Set <b>Contract start</b> to <b>1 Nov 2026</b>.'],
@@ -388,7 +388,7 @@ SUITES = [
              '<b>for</b> becomes <b>33</b> by itself (it still runs to the end). Term value <b>£3,025</b>. <b>Annual recurring stays £1,100</b>. A new <b>Year 1 recurring</b> row shows <b>£825</b> (9 months).'),
             ('DATE-04', 'End before the contract does',
              ['Set <b>for</b> to <b>12</b>.'],
-             'Term value <b>£1,100</b>. <b>Renewal ARR £0</b> appears, because the line doesn\'t run in the last month so it won\'t renew. Set <b>for</b> back to <b>33</b>.'),
+             'Term value <b>£1,100</b>. Set <b>for</b> back to <b>33</b>.'),
             ('DATE-05', 'Past the contract end is blocked',
              ['Set <b>for</b> to <b>40</b>.'],
              'The row turns red with <b>Past contract end</b>. The quote shows as blocked and <b>Sync &amp; Confirm</b> is disabled. Set it back to <b>33</b>: it clears.'),
@@ -397,7 +397,7 @@ SUITES = [
              'Every component shows <b>Months 4–36 · follows package</b> and can\'t be changed on its own. Remove the package afterwards.'),
             ('DATE-07', 'Sync writes the dates to the Opportunity',
              ['Save, then <b>Sync &amp; Confirm</b>. Open the Opportunity.'],
-             '<b>Contract Start Date 01/11/2026</b>, <b>Contract End Date 31/10/2029</b>, Amount <b>£3,025</b>. Quote Summary shows <b>Quote Renewal ARR £1,100</b>. The Opportunity Product shows Start Month 4, Months 33, Date 01/02/2027, Line End 31/10/2029.'),
+             '<b>Contract Start Date 01/11/2026</b>, <b>Contract End Date 31/10/2029</b>, Amount <b>£3,025</b>. Quote Summary shows <b>Quote Renewal ARR £0</b> (consultancy doesn\'t renew). The Opportunity Product shows Start Month 4, Months 33, Date 01/02/2027, Line End 31/10/2029.'),
             ('DATE-08', 'The order form shows the periods',
              ['Back in the desk, click <b>Generate PDF</b>.'],
              'Agreement: <b>Service start 1 November 2026</b>, initial term 36 months <b>to 31 October 2029</b>. Under the line: <b>1 February 2027 – 31 October 2029 (33 months)</b>. Schedule rows are dated (<b>Year 1 · Nov 2026 – Oct 2027: £825.00</b>), and the totals say <b>Recurring over 36 months</b>.'),
@@ -505,11 +505,11 @@ SUITES = [
         'note': 'Run before CAT-08, while the test product is still active.',
         'cases': [
             ('COST-01', 'Preview a cost file',
-             ['<b>Cost Upload</b> tab. Paste:<pre>SKU,Cost\nUAT-TEST-001,60\nNOT-A-SKU,10\nUAT-TEST-001,70\nGRC-CE-002,abc</pre>', 'Click <b>Preview Upload</b>.'],
+             ['<b>Cost Upload</b> tab. Paste:<pre>SKU,Licence Cost,Delivery Cost\nUAT-TEST-001,,60\nNOT-A-SKU,10,\nUAT-TEST-001,,70\nGRC-CE-002,abc,</pre>', 'Click <b>Preview Upload</b>.'],
              'Each row gets a status: <b>matched</b>, <b>unknown SKU</b>, <b>duplicate in file</b> and <b>invalid number</b>. Nothing has changed yet.'),
             ('COST-02', 'Apply only good rows',
-             ['Paste just <code>SKU,Cost</code> / <code>UAT-TEST-001,60</code>. <b>Preview Upload</b>, then <b>Apply Cost Upload</b>.'],
-             'The test product\'s cost is £60. The Change Log records a <b>Cost Change</b> from blank to 60.'),
+             ['Paste just <code>SKU,Licence Cost,Delivery Cost</code> / <code>UAT-TEST-001,,60</code>. <b>Preview Upload</b>, then <b>Apply Cost Upload</b>.'],
+             'The test product\'s delivery cost is £60. The Change Log records a <b>Cost Change</b> from blank to 60.'),
             ('COST-03', 'Costs drive GP on the desk',
              ['In the desk, add the test product (list £120, cost £60) to a quote.'],
              'That line shows cost <b>£60</b> and GP <b>£60 (50%)</b>. The Quote Summary GP coverage counts one more costed line.'),
@@ -548,7 +548,7 @@ E2E = [
 ]
 
 KNOWN_GAPS = [
-    ('Catalogue v4 (costs, "can be discounted", vendor quote, annual renewal): waiting on 5 answers from Lisa', 'Lisa Washer', 'Until it loads, the two UAT- products carry the flags, most products still have no cost (GP shows "n/a"), and Renewal ARR ignores the Annual Renewal flag. The 20% discount flag works today on every product'),
+    ('7 small pass-through lines read cost above price in catalogue v5 (courier, drive wipe/surrender, on-site expenses, legal-aid travel, data collection)', 'Lisa Washer', 'They keep their pre-v5 cost (5 had none, so GP shows "n/a" on those lines) until Lisa confirms. Everything else in v5 is loaded: costs, Can be discounted, Vendor quote and Annual renewal'),
     ('Flat-renewal acceptance wording on the order form', 'Tej', 'Sandbox wording: "Accepted for DXR Cyber as a renewal of … on unchanged terms". Signed off before production'),
     ('Who is in the test group: reps, their managers (approvers), technical verifiers', 'Tej / DXR Cyber', "SaaScend sets each tester's Manager, the managers' PandaDoc seat flag and the scoping permission sets before testing starts"),
     ('PandaDoc production API key (the sandbox uses a sandbox key)', 'DXR Cyber', 'Sandbox sends go silently to a SaaScend inbox; customer signatures are simulated'),

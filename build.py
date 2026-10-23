@@ -350,7 +350,7 @@ def demo():
     {fig('02-desk-quote-list.png', 'Northshire in the desk: one quote ready to sync, one flagged for the manager. ' + BLURNOTE)}
   </div>
   <div class="card"><h3 style="margin-top:0">Running order</h3><ol class="steps">
-    <li><b>The finished article (2 min).</b> {a(C.opp('A'), 'Harbourline')}: Amount £344,595 is the quote's TCV, and the Quote Summary shows annual £114,865. Open the Quote → Quote PDFs → the DXR Cyber order form.</li>
+    <li><b>The finished article (2 min).</b> {a(C.opp('A'), 'Harbourline')}: Amount £632,101.44 is the quote's TCV, and the Quote Summary shows annual £210,700.48. Open the Quote → Quote PDFs → the DXR Cyber order form.</li>
     <li><b>The guard-rail (2 min).</b> {a(C.desk('C'), 'Northshire in the desk')}: open the 45% quote to show the amber flag and "Your manager will see…". Type 150: it turns red and Blocked. Put it back.</li>
     <li><b>Sync live (2 min).</b> Open the other Northshire quote and click Sync &amp; Confirm. Back on the Opportunity, Amount is £6,915 and the Products are filled in. Generate PDF.</li>
     <li><b>A two-service deal (2 min).</b> {a(C.opp('B'), 'Kestrel &amp; Vane')}: its order form has one delivery section per service line, and the £3,600 one-off sits in year 1.</li>
